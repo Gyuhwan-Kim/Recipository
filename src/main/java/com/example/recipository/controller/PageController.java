@@ -27,4 +27,9 @@ public class PageController {
     public String goLogin(){
         return "pages/loginform";
     }
+
+    @GetMapping("/signinform")
+    public String goSignin(){
+        return "pages/signinform";
+    }
 }

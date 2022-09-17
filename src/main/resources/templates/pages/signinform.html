@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>signinform.html</title>
+</head>
+<body>
+    <div>
+        <a href="/" th:href="@{/}">
+            <img th:src="@{/image/logo.png}" alt="">
+        </a>
+        <br>
+        <span>회원 가입</span>
+        <form action="">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email">
+            <br>
+            <label for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname">
+            <br>
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password">
+            <br>
+            <label for="cpassword">Check Password</label>
+            <input type="text" id="cpassword" name="cpassword">
+            <br>
+            <button type="submit">가입 완료</button>
+        </form>
+    </div>
+</body>
+</html>
