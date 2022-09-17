@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>main.html</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <style>
+    .search_form{
+      display:inline;
+    }
+    .menubox{
+      display:inline-block;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div th:replace="fragments/navibar :: navi"></div>
+  <div>
+    <span>순위</span><a href="">+ 더보기</a>
+  </div>
+  <div th:replace="fragments/menubox :: menubox"></div>
+  <br>
+  <h2>카테고리 분류</h2>
+  <br>
+  <div th:replace="fragments/menubox :: menubox"></div>
+</div>
+</body>
+</html>
