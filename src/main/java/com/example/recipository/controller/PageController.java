@@ -22,4 +22,9 @@ public class PageController {
         mView.setViewName("index");
         return mView;
     }
+
+    @GetMapping("/loginform")
+    public String goLogin(){
+        return "pages/loginform";
+    }
 }

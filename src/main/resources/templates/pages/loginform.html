@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>loginform.html</title>
+</head>
+<body>
+    <div class="container">
+        <a href="/" th:href="@{/}">
+            <img th:src="@{/image/logo.png}" alt="">
+        </a>
+        <form action="">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email">
+            <br>
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password">
+            <br>
+            <button type="submit">로그인</button>
+        </form>
+    </div>
+</body>
+</html>
