@@ -6,7 +6,7 @@
     <ul>
         <li class="menubox" th:each="list : ${dummylist}">
             <a href="">
-                <img th:src="@{/image/emptydummy.png}" alt="" style="width:200px;">
+                <img src="/lib/image/emptydummy.png" alt="" style="width:200px;">
             </a>
             <h4>메뉴 이름</h4>
             <h4 th:text="${list}"></h4>

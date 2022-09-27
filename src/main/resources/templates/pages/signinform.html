@@ -5,29 +5,37 @@
 <head>
     <meta charset="UTF-8">
     <title>signinform.html</title>
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
 </head>
 <body>
     <div>
-        <a href="/" th:href="@{/}">
-            <img th:src="@{/image/logo.png}" alt="">
+        <a href="" th:href="@{/}">
+            <img src="/lib/image/logo.png" alt="">
         </a>
         <br>
         <span>회원 가입</span>
-        <form action="">
+        <form th:action="@{/signin}" method="post" id="signinForm">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email">
+            <input type="text" id="email" name="email" required="required"> <button class="duplCheckBtn emailCheck">중복 확인</button>
+            <input type="hidden" id="emailDuplCheck">
+            <span id="emailCheckMsg"></span>
             <br>
-            <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" name="nickname">
+            <label for="name">Nickname</label>
+            <input type="text" id="name" name="name" required="required"> <button class="duplCheckBtn nameCheck">중복 확인</button>
+            <input type="hidden" id="nameDuplCheck">
+            <span id="nameCheckMsg">8~12자로 입력해주세요.</span>
             <br>
             <label for="password">Password</label>
-            <input type="text" id="password" name="password">
+            <input type="text" id="password" name="password" required="required">
+            <span id="pwdConstraint">영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.</span>
             <br>
-            <label for="cpassword">Check Password</label>
-            <input type="text" id="cpassword" name="cpassword">
+            <label for="pwdCheck">Check Password</label>
+            <input type="text" id="pwdCheck" name="pwdCheck" required="required">
+            <span id="pwdCheckMsg"></span>
             <br>
-            <button type="submit">가입 완료</button>
+            <button type="submit" id="submitBtn">가입 완료</button>
         </form>
     </div>
 </body>
+<script src="/app/signinform.js"></script>
 </html>
