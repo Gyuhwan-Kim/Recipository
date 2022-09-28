@@ -1,6 +1,6 @@
 package com.example.recipository.repository;
 
-import com.example.recipository.model.entity.UserT;
+import com.example.recipository.model.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,7 @@ public class UserRepositoryTest {
 
     @Test
     public void insertDummy(){
-        UserT user = new UserT();
+        User user = new User();
         user.setNum(1);
         user.setEmail("dummy@gmail.com");
         user.setName("dummy");
