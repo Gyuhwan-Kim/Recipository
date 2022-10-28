@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <div th:fragment="navi">
     <a href="/" th:href="@{/}">
       <img src="/lib/image/logo.png" alt="">
@@ -15,7 +16,8 @@
       <input type="text" placeholder="검색어를 입력하세요.">
       <button class="btn btn-light" type="submit">검색</button>
     </form>
-    <a class="btn btn-primary" href="/loginform">로그인</a>
-    <a class="btn btn-success" href="/signinform">회원가입</a>
+    <a class="btn btn-primary" href="/loginform" sec:authorize="!isAuthenticated()">로그인</a>
+    <a class="btn btn-secondary" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
+    <a class="btn btn-success" href="/signinform" sec:authorize="!isAuthenticated()">회원가입</a>
   </div>
 </html>

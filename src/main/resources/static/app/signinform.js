@@ -96,11 +96,19 @@
 
             var object = formToJSON(formData);
 
-            var queryString = new URLSearchParams(new FormData(this)).toString();
+//            var queryString = new URLSearchParams(new FormData(this)).toString();
+
+            var token = document.querySelector("meta[name=_csrf]").content;
+            var header = document.querySelector("meta[name=_csrf_header]").content;
 
             var promise = fetch(url, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                    "header": header,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": token
+                },
                 body: JSON.stringify(object)
             });
 
@@ -132,9 +140,17 @@
 
     // 이메일, 닉네임 중복확인 function
     function duplCheck(url, object, target1, target2){
+        var token = document.querySelector("meta[name=_csrf]").content;
+        var header = document.querySelector("meta[name=_csrf_header]").content;
+
         var promise = fetch(url, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                    "header": header,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": token
+                },
                 body: JSON.stringify(object)
         });
 

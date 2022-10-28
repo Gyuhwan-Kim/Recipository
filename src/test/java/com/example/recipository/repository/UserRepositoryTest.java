@@ -22,4 +22,13 @@ public class UserRepositoryTest {
 
         userRepository.save(user);
     }
+
+    @Test
+    public void login(){
+        User user = new User();
+        user.setEmail("admin@recipository.com");
+
+        User dbData = userRepository.getByEmail(user.getEmail());
+        System.out.println(dbData);
+    }
 }

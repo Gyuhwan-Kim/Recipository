@@ -4,6 +4,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>loginform.html</title>
 </head>
 <body>
@@ -11,15 +13,16 @@
         <a href="/" th:href="@{/}">
             <img src="/lib/image/logo.png" alt="">
         </a>
-        <form action="">
+        <form th:action="@{/login}" method="post" id="loginForm">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email">
+            <input type="text" id="email" name="email" required="required">
             <br>
             <label for="password">Password</label>
-            <input type="text" id="password" name="password">
+            <input type="text" id="password" name="password" required="required">
             <br>
             <button type="submit">로그인</button>
         </form>
     </div>
 </body>
+<script src="/app/loginform.js"></script>
 </html>
