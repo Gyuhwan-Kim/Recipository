@@ -24,7 +24,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .formLogin(login ->
                         login.loginPage("/loginform").permitAll()
-//                                .loginProcessingUrl("/login").permitAll()
+                                .loginProcessingUrl("/login").permitAll()
                 );
     }
 

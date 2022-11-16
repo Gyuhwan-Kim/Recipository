@@ -1,9 +1,12 @@
 package com.example.recipository.repository;
 
-import com.example.recipository.model.entity.User;
+
+import com.example.recipository.domain.SpUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashSet;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -12,23 +15,25 @@ public class UserRepositoryTest {
 
     @Test
     public void insertDummy(){
-        User user = new User();
-        user.setNum(1);
-        user.setEmail("dummy@gmail.com");
-        user.setName("dummy");
-        user.setPassword("1234");
-        user.setCopy_contents("");
-        user.setAuthor("no");
+//        SpUser user = new SpUser();
+//
+////        user.setUserId(1L);
+//        user.setEmail("dummy@gmail.com");
+//        user.setName("dummy");
+//        user.setPassword("dummy1234");
+//
+//        user.setEnabled(true);
+//
+//        userRepository.save(user);
 
-        userRepository.save(user);
     }
 
     @Test
     public void login(){
-        User user = new User();
+        SpUser user = new SpUser();
         user.setEmail("admin@recipository.com");
 
-        User dbData = userRepository.getByEmail(user.getEmail());
+        SpUser dbData = userRepository.getByEmail(user.getEmail());
         System.out.println(dbData);
     }
 }

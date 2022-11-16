@@ -9,10 +9,10 @@
         var regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]{2,3}$/;
 
         if(!regex.test(this.value)) {
-            document.querySelector("#emailCheckMsg").innerText = "이메일 양식에 맞게 작성해주세요.";
+            document.querySelector("#emailConstraint").innerText = "이메일 양식에 맞게 작성해주세요.";
             emailValidation = false;
         } else {
-            document.querySelector("#emailCheckMsg").innerText = "중복 확인이 필요합니다.";
+            document.querySelector("#emailConstraint").innerText = "중복 확인이 필요합니다.";
             emailValidation = true;
         }
     });
@@ -20,16 +20,13 @@
     // name constraint
     document.querySelector("#name").addEventListener("input", function(){
         nameValidation = false;
-        var regex = /^[a-zA-Z0-9가-힁]{1,12}$/;
+        var regex = /^[a-zA-Z0-9가-힁]{4,12}$/;
 
-        if(this.value == ""){
-            document.querySelector("#nameCheckMsg").innerText = "8~12자로 입력해주세요.";
-            nameValidation = false;
-        } else if(!regex.test(this.value)) {
-            document.querySelector("#nameCheckMsg").innerText = "닉네임 양식에 맞게 작성해주세요.";
+        if(this.value == "" || !regex.test(this.value)){
+            document.querySelector("#nameConstraint").innerText = "4~12자로 입력해주세요.";
             nameValidation = false;
         } else if(regex.test(this.value)){
-            document.querySelector("#nameCheckMsg").innerText = "중복 확인이 필요합니다.";
+            document.querySelector("#nameConstraint").innerText = "중복 확인이 필요합니다.";
             nameValidation = true;
         }
     });
@@ -63,12 +60,10 @@
     document.querySelector("#password").addEventListener("input", function(){
         var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
 
-        if(this.value == ""){
-            document.querySelector("#pwdConstraint").innerText = "영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.";
-        } else if(regex.test(this.value)){
-            document.querySelector("#pwdConstraint").innerText = "";
+        if(this.value == "" || !regex.test(this.value)){
+            document.querySelector("#passwordConstraint").innerText = "영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.";
         } else {
-            document.querySelector("#pwdConstraint").innerText = "사용할 수 없는 비밀번호 입니다.";
+            document.querySelector("#passwordConstraint").innerText = "사용 가능한 비밀번호 입니다.";
         }
 
         pwdCheck();
@@ -77,6 +72,7 @@
     // 비밀 번호 check
     document.querySelector("#pwdCheck").addEventListener("input", pwdCheck);
 
+    // 회원 가입
     document.querySelector("#signinForm").addEventListener("submit", function(e){
         e.preventDefault();
 
@@ -119,6 +115,12 @@
                     alert("회원 가입에 성공하였습니다. 로그인 후 이용해주세요.");
                     location.href = "/loginform";
                 } else {
+                    if(data.errorMessage != null){
+                        var errorList = Object.entries(data.errorMessage);
+                        errorList.forEach(error => {
+                            document.querySelector("#" + error[0] + "Constraint").innerText = error[1];
+                        });
+                    }
                     alert("회원 가입에 실패하였습니다. 문제가 반복된다면 문의 바랍니다.");
                 }
             });
@@ -133,8 +135,6 @@
             alert("닉네임 중복 확인이 필요합니다.");
         } else if(!pwdValidation){
             alert("비밀 번호 정보들을 올바르게 입력해주세요.");
-        } else if(formValidation){
-            alert("회원 가입 절차 시작");
         }
     });
 
@@ -158,10 +158,10 @@
             return response.json();
         }).then(function(data){
             if(data.isChecked){
-                document.querySelector(target1 + "CheckMsg").innerText = "다른 "+ target2 + "을 사용해주세요";
+                document.querySelector(target1 + "Constraint").innerText = "다른 "+ target2 + "을 사용해주세요";
                 document.querySelector(target1 + "DuplCheck").value = false;
             } else {
-                document.querySelector(target1 + "CheckMsg").innerText = "사용 가능한 " + target2 + "입니다.";
+                document.querySelector(target1 + "Constraint").innerText = "사용 가능한 " + target2 + "입니다.";
                 document.querySelector(target1 + "DuplCheck").value = true;
             }
         });
