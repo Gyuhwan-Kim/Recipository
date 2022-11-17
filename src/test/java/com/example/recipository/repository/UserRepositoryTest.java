@@ -28,12 +28,12 @@ public class UserRepositoryTest {
 
     }
 
-    @Test
-    public void login(){
-        SpUser user = new SpUser();
-        user.setEmail("admin@recipository.com");
-
-        SpUser dbData = userRepository.getByEmail(user.getEmail());
-        System.out.println(dbData);
-    }
+//    @Test
+//    public void login(){
+//        SpUser user = new SpUser();
+//        user.setEmail("admin@recipository.com");
+//
+//        SpUser dbData = userRepository.getByEmail(user.getEmail());
+//        System.out.println(dbData);
+//    }
 }

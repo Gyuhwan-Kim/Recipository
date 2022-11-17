@@ -60,15 +60,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
-    @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody User user, HttpSession session){
-        Map<String, Object> map = new HashMap<>();
-        map.put("isSuccess", userService.login(user));
-
-        if((boolean)map.get("isSuccess")){
-            session.setAttribute("user", user);
-        }
-
-        return map;
-    }
+//    @PostMapping("/login")
+//    public Map<String, Object> login(@RequestBody User user, HttpSession session){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("isSuccess", userService.login(user));
+//
+//        if((boolean)map.get("isSuccess")){
+//            session.setAttribute("user", user);
+//        }
+//
+//        return map;
+//    }
 }

@@ -70,22 +70,22 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-    @Override
-    public boolean login(User user) {
-        SpUser dbData = userRepository.getByEmail(user.getEmail());
-
-        // DB에 data가 있는 경우
-        if(dbData != null) {
-            boolean checkPwd = BCrypt.checkpw(user.getPassword(), dbData.getPassword());
-
-            // 비밀 번호가 일치하는 경우
-            if(checkPwd){
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    @Override
+//    public boolean login(User user) {
+//        SpUser dbData = userRepository.getByEmail(user.getEmail());
+//
+//        // DB에 data가 있는 경우
+//        if(dbData != null) {
+//            boolean checkPwd = BCrypt.checkpw(user.getPassword(), dbData.getPassword());
+//
+//            // 비밀 번호가 일치하는 경우
+//            if(checkPwd){
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
 
 }

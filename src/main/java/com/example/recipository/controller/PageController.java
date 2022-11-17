@@ -32,4 +32,9 @@ public class PageController {
     public String goSignin(){
         return "pages/signinform";
     }
+
+    @GetMapping("/login-failure")
+    public String goLoginFailure(){
+        return "pages/login-failure";
+    }
 }
