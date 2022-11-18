@@ -4,23 +4,36 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="_csrf" th:content="${_csrf.token}">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>loginform.html</title>
 </head>
+<link rel="stylesheet" href="/lib/css/bootstrap.css">
+<link rel="stylesheet" href="/lib/css/signin-loginform.css">
 <body>
     <div class="container">
-        <a href="/" th:href="@{/}">
-            <img src="/lib/image/logo.png" alt="">
-        </a>
+        <div id="logo" class="text-center">
+            <a href="/" th:href="@{/}">
+                <img src="/lib/image/logo.png" alt="">
+            </a>
+        </div>
+        <br>
         <form th:action="@{/login}" method="post" id="loginForm">
-            <label for="username">Email</label>
-            <input type="text" id="username" name="username" required="required">
-            <br>
-            <label for="password">Password</label>
-            <input type="text" id="password" name="password" required="required">
-            <br>
-            <button type="submit">로그인</button>
+            <div class="row col-sm-5" style="float: none; margin:0 auto;">
+                <label for="username">Email</label>
+                <div class="col">
+                    <input type="text" id="username" name="username"
+                           class="form-control text-center" required="required">
+                </div>
+            </div>
+            <div class="row col-sm-5" style="float: none; margin:0 auto;">
+                <label for="password">Password</label>
+                <div class="col">
+                    <input type="text" id="password" name="password"
+                           class="form-control text-center" required="required">
+                </div>
+            </div>
+            <div class="row col-sm-5" style="float: none; margin:0 auto;">
+                <button type="submit" id="submitBtn" class="btn btn-primary">로그인</button>
+            </div>
         </form>
     </div>
 </body>

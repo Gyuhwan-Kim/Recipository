@@ -5,21 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>signinform.html</title>
-    <link rel="stylesheet" href="/lib/css/bootstrap.css">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
-<style>
-    label {
-        font-size: 24px;
-    }
-    #submitBtn {
-        margin-top: 20px;
-    }
-</style>
+<link rel="stylesheet" href="/lib/css/bootstrap.css">
+<link rel="stylesheet" href="/lib/css/signin-loginform.css">
 <body>
     <div class="container">
-        <div class="text-center">
+        <div id="logo" class="text-center">
             <a href="" th:href="@{/}" >
                 <img src="/lib/image/logo.png" alt="">
             </a>
