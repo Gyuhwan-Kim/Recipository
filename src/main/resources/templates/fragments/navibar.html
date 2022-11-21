@@ -3,21 +3,23 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <div th:fragment="navi">
-    <a href="/" th:href="@{/}">
-      <img src="/lib/image/logo.png" alt="">
-    </a>
-    <form class="search_form" action="">
-      <select name="" id="">
-        <option value="">제목</option>
-        <option value="">내용</option>
-        <option value="">제목+내용</option>
-      </select>
-      <input type="text" placeholder="검색어를 입력하세요.">
+<div th:fragment="navi">
+  <a href="/" th:href="@{/}">
+    <img src="/lib/image/logo.png" alt="">
+  </a>
+  <form class="search_form" action="">
+    <select name="" id="">
+      <option value="">제목</option>
+      <option value="">내용</option>
+      <option value="">제목+내용</option>
+    </select>
+    <input type="text" placeholder="검색어를 입력하세요.">
       <button class="btn btn-light" type="submit">검색</button>
     </form>
     <a class="btn btn-primary" href="/loginform" sec:authorize="!isAuthenticated()">로그인</a>
-    <a class="btn btn-secondary" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
+    <form th:action="@{/logout}" method="post">
+      <button class="btn btn-secondary" th:href="@{/logout}" sec:authorize="isAuthenticated()">로그아웃</button>
+    </form>
     <a class="btn btn-success" href="/signinform" sec:authorize="!isAuthenticated()">회원가입</a>
   </div>
 </html>
