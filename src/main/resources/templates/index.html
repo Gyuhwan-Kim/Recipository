@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>main.html</title>
@@ -19,6 +20,11 @@
 <div class="container">
   <div th:replace="fragments/navibar :: navi"></div>
   <div>
+    <div>
+      <button class="btn btn-light" sec:authorize="isAuthenticated()">
+        <a href="/user/contentform">글쓰기</a>
+      </button>
+    </div>
     <span>순위</span><a href="">+ 더보기</a>
   </div>
   <div th:replace="fragments/menubox :: menubox"></div>

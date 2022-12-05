@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>write.html</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<body>
+<div class="container">
+    <h1>글쓰기</h1>
+    <form action="/user/write" id="contentForm" enctype="multipart/form-data" method="post">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title">
+        <br>
+        <input type="hidden" id="writer" name="writer">
+        <label for="content">내용</label>
+        <textarea name="content" id="content" cols="30" rows="10"></textarea>
+        <br>
+        <img src="" alt="" id="image" name="image" style="width: 150px; height: 150px;">
+        <a href="" id="imageUploadBtn">이미지 업로드</a>
+        <input type="file" id="imageFile" name="imageFile" style="display:none">
+        <br>
+        <label for="">카테고리</label>
+        <br>
+        <label for="link">참고 링크</label>
+        <ul>
+            <li id="linkList">
+                <input type="text" class="refLink" id="link" name="link">
+            </li>
+        </ul>
+        <a href="#" id="linkAddBtn">링크 추가</a>
+        <br>
+        <input type="checkbox" id="bePublic" name="bePublic">
+        <label for="bePublic">게시글 공개 여부</label>
+        <br>
+        <button type="submit" id="submitBtn">작성 완료</button>
+        <a href="#">작성 취소</a>
+    </form>
+</div>
+</body>
+<script src="/app/contentform.js"></script>
+</html>

@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,5 +37,11 @@ public class PageController {
     @GetMapping("/login-failure")
     public String goLoginFailure(){
         return "pages/login-failure";
+    }
+
+    @GetMapping("/user/contentform")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String goWrite(){
+        return "pages/contentform";
     }
 }
