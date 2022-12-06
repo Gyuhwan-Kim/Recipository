@@ -1,0 +1,28 @@
+    .row{
+        float: none;
+        margin:0 auto;
+    }
+
+    #image{
+        border-width: 1px;
+        border-style: solid;
+        border-color: #ced4da;
+    }
+
+    label {
+        font-size: 24px;
+    }
+
+    ul{
+        list-style: none;
+        padding: inherit;
+    }
+
+    .refLink{
+        margin-top: 10px;
+    }
+
+    #submitBtn, #cancelBtn {
+        margin: 20px;
+        width: 70px;
+    }

@@ -13,7 +13,7 @@
 
         var input = document.createElement("input");
         input.setAttribute("type", "text");
-        input.setAttribute("class", "refLink");
+        input.setAttribute("class", "refLink form-control");
         input.setAttribute("name", "link");
 
         linkList.appendChild(input);
