@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>write.html</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<link rel="stylesheet" href="/lib/css/bootstrap.css">
+<link rel="stylesheet" href="/lib/css/contentform.css">
+<style>
+    .search_form{
+      display:inline;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/navibar :: navi"></div>
+    <h2 class="row col-8">게시글</h2>
+    <div class="row col-8">
+        <div th:if="${recipe.writer} == ${#authentication.name}">
+            <a th:href="@{/user/delete/{contentId}(contentId = ${recipe.contentId})}"
+               class="btn btn-light float-end">삭제</a>
+            <a th:href="@{/user/content_updateform/{contentId}(contentId = ${recipe.contentId})}"
+               class="btn btn-light float-end">수정</a>
+        </div>
+    </div>
+    <div class="row col-8">
+        <label for="title">제목</label>
+        <div class="col">
+            <input type="text" id="title" name="title" class="form-control"
+                   style="background-color: white;" th:value="${recipe.title}" disabled>
+        </div>
+    </div>
+    <div class="row col-8">
+        <label for="writer">작성자</label>
+        <div class="col">
+            <input type="text" id="writer" name="" class="form-control"
+                   style="background-color: white;" th:value="${recipe.writer}" disabled>
+        </div>
+    </div>
+    <div class="row col-8">
+        <label for="regDate">작성 일시</label>
+        <div class="col">
+            <input type="text" id="regDate" name="" class="form-control"
+                   style="background-color: white;" th:value="${recipe.regDate}" disabled>
+        </div>
+        <label for="modDate">수정 일시</label>
+        <div class="col">
+            <input type="text" id="modDate" name="" class="form-control"
+                   style="background-color: white;" th:value="${recipe.modDate}"disabled>
+        </div>
+    </div>
+    <div class="row col-8">
+        <label for="content">내용</label>
+        <div class="col-8 input">
+            <textarea name="content" id="content" cols="30" rows="10"
+                      class="form-control" style="height: 240px;background-color: white;"
+                      th:text="${recipe.content}"disabled></textarea>
+        </div>
+        <div class="col-4" style="padding-left: 35px;">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <img src="/lib/image/no_image.png" alt="" id="image"
+                     name="image" style="width: 240px; height: 240px;">
+            </a>
+            <div class="row">
+            <div class="col">
+                <span>조회수 :
+                    <span th:text="${recipe.viewCount}"></span>
+                </span>
+            </div>
+            <div class="col">
+                <span>좋아요 :
+                    <span th:text="${recipe.likeCount}"></span>
+                </span>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-8" style="float: none; margin:0 auto;">
+        <label for="" style="float: none; margin:0 auto;">카테고리</label>
+    </div>
+    <div class="row col-8">
+        <label for="link" style="width: 150px;">참고 링크</label>
+        <ul id="link">
+            <li th:each="link : ${recipe.link}">
+                <a href="" class="refLink form-control" th:text="${link}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="${recipe.title}">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <img src="/lib/image/no_image.png" alt="">
+        </div>
+    </div>
+</div>
+</body>
+<script src="/lib/js/bootstrap.bundle.js"></script>
+</html>

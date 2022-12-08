@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class RecipeDto {
     private List<String> link;
     private String category;
     private boolean bePublic;
+    private String regDate;
+    private String modDate;
 
     public Recipe toEntity(){
         List<Link> linkList = new ArrayList<>();
@@ -33,6 +37,14 @@ public class RecipeDto {
                         .build();
                 linkList.add(link);
             });
+        }
+
+        LocalDateTime ldtModDate;
+        if(this.modDate != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            ldtModDate = LocalDateTime.parse(this.modDate, formatter);
+        } else {
+            ldtModDate = LocalDateTime.now();
         }
 
         return Recipe.builder()
@@ -46,6 +58,7 @@ public class RecipeDto {
                 .link(linkList)
                 .category(category)
                 .bePublic(bePublic)
+                .modDate(ldtModDate)
                 .build();
     }
 }

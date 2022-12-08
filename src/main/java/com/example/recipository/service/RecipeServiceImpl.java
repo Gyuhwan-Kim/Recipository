@@ -1,7 +1,9 @@
 package com.example.recipository.service;
 
+import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.RecipeDto;
+import com.example.recipository.domain.SpUser;
 import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,9 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -24,6 +27,12 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository) {
         this.recipeRepository = recipeRepository;
         this.linkRepository = linkRepository;
+    }
+
+    @Override
+    public List<Recipe> getRecipeList() {
+
+        return recipeRepository.findAll();
     }
 
     // 게시글을 작성하는 service logic
@@ -79,5 +88,72 @@ public class RecipeServiceImpl implements RecipeService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
+        // link repository로부터 data를 가져올 contentId를 담은 dummy entity
+        Recipe recipe = Recipe.builder()
+                .contentId(contentId)
+                .build();
+        // link repository로부터 가져온 List<Link>
+        List<Link> linkList = linkRepository.findAllByRecipe(recipe);
+
+        // List<Link> 의 한 Link로부터의 온전한 Recipe entity를 Dto로
+        recipe = linkList.get(0).getRecipe();
+        RecipeDto recipeDto = recipe.toDto();
+
+        // List<Link> 에서 String link로 List<String> 을 만들어 Dto에 setting
+        List<String> strLinkList = new ArrayList<String>();
+        linkList.forEach(link -> {
+            strLinkList.add(link.getLink());
+        });
+        recipeDto.setLink(strLinkList);
+
+        // Cookie의 조회수 중복 방지를 위한 작업
+        // return을 위한 Cookie variable
+        Cookie visitCookie = null;
+        // Cookie 존재 여부
+        boolean cookieExists = false;
+        // Request로부터 넘겨받은 Cookie 중
+        for(Cookie cookie : cookieList){
+            // "visit" 이라는 이름이 있으면
+            if(cookie.getName().equals("visit")){
+                cookieExists = true;
+                // 그 안에 해당 contentId가 포함되어 있는지 여부 확인해서 없으면
+                if(!cookie.getValue().contains(contentId.toString())) {
+                    // 값으로 추가
+                    cookie.setValue(cookie.getValue() + "_" + contentId);
+                    visitCookie = cookie;
+                    // 조회수 1 증가 및 repository save(update)
+                    recipeDto.setViewCount(recipeDto.getViewCount() + 1);
+                    recipeRepository.save(recipeDto.toEntity());
+                    break;
+                // 확인해서 있으면 그대로 return
+                } else {
+                    visitCookie = cookie;
+                    break;
+                }
+            }
+        }
+        // 아예 "visit" 이라는 이름의 Cookie가 없으면
+        if(!cookieExists){
+            // 새로 만들어서 return
+            visitCookie = new Cookie("visit", contentId.toString());
+            visitCookie.setDomain("localhost");
+            visitCookie.setPath("/content");
+            visitCookie.setMaxAge(60*60*24);
+            visitCookie.setSecure(true);
+            // 조회수 1 증가 및 repository save(update)
+            recipeDto.setViewCount(recipeDto.getViewCount() + 1);
+            recipeRepository.save(recipeDto.toEntity());
+        }
+
+        // Map에 담아 controller로 return
+        Map<String, Object> map = new HashMap<>();
+        map.put("visitCookie", visitCookie);
+        map.put("recipeDto", recipeDto);
+
+        return map;
     }
 }

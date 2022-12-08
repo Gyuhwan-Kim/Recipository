@@ -1,25 +1,29 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.service.RecipeServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 public class PageController {
+    private final RecipeServiceImpl recipeService;
+
+    public PageController(RecipeServiceImpl recipeService) {
+        this.recipeService = recipeService;
+    }
+
     @GetMapping(value = {"/"})
     public ModelAndView main(){
         ModelAndView mView = new ModelAndView();
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(5);
-        mView.addObject("dummylist", list);
+        mView.addObject("recipeList", recipeService.getRecipeList());
         mView.setViewName("index");
         return mView;
     }
@@ -43,5 +47,25 @@ public class PageController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String goWrite(){
         return "pages/contentform";
+    }
+
+    @GetMapping("/content/{contentId}")
+    public ModelAndView goContent(@PathVariable Long contentId,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response){
+
+        // Request로부터 Cookie array를 받아서 service에 전달
+        Cookie[] cookieList = request.getCookies();
+        Map<String, Object> map = recipeService.getRecipe(contentId, cookieList);
+        // service에서 생성 혹은 수정한 Cookie를 response에 담음
+        response.addCookie((Cookie) map.get("visitCookie"));
+
+        ModelAndView mView = new ModelAndView();
+        // service에서 data를 가져와서 ModelAndView 객체에 담음
+        mView.addObject("recipe", map.get("recipeDto"));
+        // 이동하고자 하는 페이지 정보와 함께 return
+        mView.setViewName("pages/content");
+
+        return mView;
     }
 }

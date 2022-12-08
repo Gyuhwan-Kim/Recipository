@@ -3,6 +3,8 @@ package com.example.recipository.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
 @Builder
 @Table(name = "recipe")
 @Entity
-public class Recipe {
+public class Recipe extends BaseTime{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "content_id")
@@ -27,6 +29,13 @@ public class Recipe {
     private List<Link> link;
     private String category;
     private boolean bePublic;
+    @Column(nullable = false)
+    private LocalDateTime modDate;
+
+    @Override
+    public LocalDateTime getRegDate() {
+        return super.getRegDate();
+    }
 
     public RecipeDto toDto(){
         List<String> linkList = new ArrayList<String>();
@@ -47,6 +56,8 @@ public class Recipe {
                 .link(linkList)
                 .category(category)
                 .bePublic(bePublic)
+                .regDate(getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .modDate(getModDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 

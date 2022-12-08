@@ -4,12 +4,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <div class="menubox" th:fragment="menubox">
     <ul>
-        <li class="menubox" th:each="list : ${dummylist}">
-            <a href="">
+        <li class="menubox" th:each="list : ${recipeList}">
+            <a th:href="@{/content/{contentId}(contentId = ${list.contentId})}">
                 <img src="/lib/image/emptydummy.png" alt="" style="width:200px;">
             </a>
-            <h4>메뉴 이름</h4>
-            <h4 th:text="${list}"></h4>
+            <h4 th:text="${list.title}">메뉴 이름</h4>
+            <h4 th:text="${list.writer}"></h4>
         </li>
     </ul>
 </div>
