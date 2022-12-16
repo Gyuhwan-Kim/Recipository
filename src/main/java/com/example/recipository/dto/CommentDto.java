@@ -7,29 +7,40 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class CommentDto {
-    private Long commentId;
-    private String writer;
-    private String comment;
-    private Long targetId;
-    private Long groupId;
-    private String regDate;
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class CommentRequestDto {
+        private String comment;
+        private Long targetId;
+        private Long groupId;
 
-    public Comment toEntity(){
-        Recipe recipe = Recipe.builder()
-                .contentId(targetId)
-                .build();
+        public Comment toEntity(Long id, String writer){
+            Recipe recipe = Recipe.builder()
+                    .contentId(targetId)
+                    .build();
 
-        return Comment.builder()
-                .commentId(this.commentId)
-                .writer(this.writer)
-                .comment(this.comment)
-                .recipe(recipe)
-                .groupId(this.groupId)
-                .build();
+            return Comment.builder()
+                    .commentId(id)
+                    .writer(writer)
+                    .comment(this.comment)
+                    .recipe(recipe)
+                    .groupId(this.groupId)
+                    .build();
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class CommentResponseDto {
+        private Long commentId;
+        private String writer;
+        private String comment;
+        private Long groupId;
+        private String regDate;
     }
 }

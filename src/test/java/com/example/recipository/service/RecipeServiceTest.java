@@ -85,16 +85,15 @@ public class RecipeServiceTest {
     @Rollback(false)
     public void test4() {
         Long id = commentRepository.getSequenceValue();
-        CommentDto commentDto = CommentDto.builder()
+        CommentDto.CommentRequestDto commentDto = CommentDto.CommentRequestDto.builder()
                 .comment("content test1")
                 .targetId(3L)
                 .build();
-        commentDto.setWriter("test@test.com");
+        String writer = "test@test.com";
 
-        commentDto.setCommentId(id);
         commentDto.setGroupId(id);
         System.out.println(commentDto);
-        Comment comment = commentDto.toEntity();
+        Comment comment = commentDto.toEntity(id, writer);
 
         commentRepository.save(comment);
     }

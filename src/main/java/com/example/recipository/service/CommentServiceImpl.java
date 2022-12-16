@@ -2,6 +2,7 @@ package com.example.recipository.service;
 
 import com.example.recipository.domain.Comment;
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.CommentRequestDto;
 import com.example.recipository.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +19,18 @@ public class CommentServiceImpl implements CommentService{
 
     // 댓글을 추가하는 service logic
     @Override
-    public Map<String, Object> addComment(CommentDto commentDto, String writer) {
+    public Map<String, Object> addComment(CommentDto.CommentRequestDto commentDto, String writer) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             Long id = commentRepository.getSequenceValue();
-            commentDto.setCommentId(id);
-            commentDto.setWriter(writer);
+//            commentDto.setCommentId(id);
+//            commentDto.setWriter(writer);
             // Dto의 groupId가 null 인 경우는 글에 대한 댓글
             // 따라서 댓글의 id를 groupId 에도 넣어줌
             if (commentDto.getGroupId() == null) {
                 commentDto.setGroupId(id);
             }
-            Comment comment = commentDto.toEntity();
-            System.out.println(commentDto);
+            Comment comment = commentDto.toEntity(id, writer);
 
             // Comment entity에 담긴 data를 repository에 save하고
             commentRepository.save(comment);

@@ -2,6 +2,7 @@ package com.example.recipository.controller;
 
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.CommentRequestDto;
 import com.example.recipository.service.CommentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +24,7 @@ public class CommentController {
     // 댓글 작성 통합
     @PostMapping("/user/add-comment")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<Object> addComment(CommentDto commentDto,
+    public ResponseEntity<Object> addComment(CommentDto.CommentRequestDto commentDto,
                                              @AuthenticationPrincipal SpUser spUser){
 
         // Authentication principal인 UserDetails 에서 사용자 정보를 받아옴

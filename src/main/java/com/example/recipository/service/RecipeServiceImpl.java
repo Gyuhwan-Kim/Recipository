@@ -4,6 +4,7 @@ import com.example.recipository.domain.Comment;
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.CommentResponseDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.LinkRepository;
@@ -108,7 +109,7 @@ public class RecipeServiceImpl implements RecipeService {
         recipe = linkList.get(0).getRecipe();
         RecipeDto recipeDto = recipe.toDto();
 
-        List<CommentDto> commentDtoList = recipe.getCommentDtoList();
+        List<CommentDto.CommentResponseDto> commentDtoList = recipe.getCommentDtoList();
 //        List<Comment> commentList = commentRepository.findAllByRecipeOrderByGroupIdAscCommentIdAsc(recipe);
 //        List<CommentDto> commentDtoList = new ArrayList<>();
 //        commentList.forEach(tmp -> {

@@ -1,6 +1,7 @@
 package com.example.recipository.domain;
 
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.CommentResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class Comment extends BaseTime {
     private Recipe recipe;
     private Long groupId;
 
-    public CommentDto toDto(){
-        return CommentDto.builder()
+    public CommentDto.CommentResponseDto toDto(){
+        return CommentDto.CommentResponseDto.builder()
                 .commentId(this.commentId)
                 .writer(this.writer)
                 .comment(this.comment)

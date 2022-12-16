@@ -1,6 +1,7 @@
 package com.example.recipository.domain;
 
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.CommentResponseDto;
 import com.example.recipository.dto.RecipeDto;
 import lombok.*;
 
@@ -72,8 +73,8 @@ public class Recipe extends BaseTime {
         });
     }
 
-    public List<CommentDto> getCommentDtoList(){
-        List<CommentDto> commentDtoList = new ArrayList<CommentDto>();
+    public List<CommentDto.CommentResponseDto> getCommentDtoList(){
+        List<CommentDto.CommentResponseDto> commentDtoList = new ArrayList<>();
         this.commentList.forEach(tmp -> {
             commentDtoList.add(tmp.toDto());
         });
