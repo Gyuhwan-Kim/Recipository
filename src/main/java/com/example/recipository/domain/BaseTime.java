@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseTime {
+public abstract class ContentBaseTime {
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime regDate;
