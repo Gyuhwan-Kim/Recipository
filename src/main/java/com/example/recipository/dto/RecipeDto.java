@@ -1,5 +1,8 @@
-package com.example.recipository.domain;
+package com.example.recipository.dto;
 
+import com.example.recipository.domain.Comment;
+import com.example.recipository.domain.Link;
+import com.example.recipository.domain.Recipe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

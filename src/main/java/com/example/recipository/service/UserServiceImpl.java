@@ -2,11 +2,9 @@ package com.example.recipository.service;
 
 import com.example.recipository.domain.SpAuthority;
 import com.example.recipository.domain.SpUser;
-import com.example.recipository.domain.UserDto;
-import com.example.recipository.model.entity.User;
+import com.example.recipository.dto.UserDto;
 import com.example.recipository.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

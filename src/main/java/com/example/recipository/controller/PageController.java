@@ -63,6 +63,7 @@ public class PageController {
         ModelAndView mView = new ModelAndView();
         // service에서 data를 가져와서 ModelAndView 객체에 담음
         mView.addObject("recipe", map.get("recipeDto"));
+        mView.addObject("commentList", map.get("commentDtoList"));
         // 이동하고자 하는 페이지 정보와 함께 return
         mView.setViewName("pages/content");
 

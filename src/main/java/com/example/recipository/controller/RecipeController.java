@@ -1,6 +1,6 @@
 package com.example.recipository.controller;
 
-import com.example.recipository.domain.RecipeDto;
+import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.service.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;

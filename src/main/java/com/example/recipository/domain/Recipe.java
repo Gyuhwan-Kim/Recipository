@@ -1,5 +1,7 @@
 package com.example.recipository.domain;
 
+import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.RecipeDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +16,7 @@ import java.util.List;
 @Builder
 @Table(name = "recipe")
 @Entity
-public class Recipe extends BaseTime{
+public class Recipe extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "content_id")
@@ -29,6 +31,9 @@ public class Recipe extends BaseTime{
     private List<Link> link;
     private String category;
     private boolean bePublic;
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OrderBy("groupId asc, commentId asc")
+    private List<Comment> commentList;
     @Column(nullable = false)
     private LocalDateTime modDate;
 
@@ -65,5 +70,14 @@ public class Recipe extends BaseTime{
         link.forEach(tmp -> {
             tmp.setRecipe(this);
         });
+    }
+
+    public List<CommentDto> getCommentDtoList(){
+        List<CommentDto> commentDtoList = new ArrayList<CommentDto>();
+        this.commentList.forEach(tmp -> {
+            commentDtoList.add(tmp.toDto());
+        });
+
+        return commentDtoList;
     }
 }

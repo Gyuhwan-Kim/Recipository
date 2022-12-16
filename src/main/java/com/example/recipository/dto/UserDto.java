@@ -1,4 +1,4 @@
-package com.example.recipository.domain;
+package com.example.recipository.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

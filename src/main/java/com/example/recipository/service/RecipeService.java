@@ -1,8 +1,7 @@
 package com.example.recipository.service;
 
 import com.example.recipository.domain.Recipe;
-import com.example.recipository.domain.RecipeDto;
-import com.example.recipository.domain.SpUser;
+import com.example.recipository.dto.RecipeDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;

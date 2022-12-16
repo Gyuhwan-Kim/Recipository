@@ -1,9 +1,11 @@
 package com.example.recipository.service;
 
+import com.example.recipository.domain.Comment;
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
-import com.example.recipository.domain.RecipeDto;
-import com.example.recipository.domain.SpUser;
+import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.RecipeDto;
+import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +22,15 @@ import java.util.*;
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final LinkRepository linkRepository;
+    private final CommentRepository commentRepository;
 
     @Value("${file.directory}")
     private String savePath;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository) {
         this.recipeRepository = recipeRepository;
         this.linkRepository = linkRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -90,6 +94,7 @@ public class RecipeServiceImpl implements RecipeService {
         }
     }
 
+    // 게시글의 data를 가져오는 service logic
     @Override
     public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
         // link repository로부터 data를 가져올 contentId를 담은 dummy entity
@@ -102,6 +107,13 @@ public class RecipeServiceImpl implements RecipeService {
         // List<Link> 의 한 Link로부터의 온전한 Recipe entity를 Dto로
         recipe = linkList.get(0).getRecipe();
         RecipeDto recipeDto = recipe.toDto();
+
+        List<CommentDto> commentDtoList = recipe.getCommentDtoList();
+//        List<Comment> commentList = commentRepository.findAllByRecipeOrderByGroupIdAscCommentIdAsc(recipe);
+//        List<CommentDto> commentDtoList = new ArrayList<>();
+//        commentList.forEach(tmp -> {
+//            commentDtoList.add(tmp.toDto());
+//        });
 
         // List<Link> 에서 String link로 List<String> 을 만들어 Dto에 setting
         List<String> strLinkList = new ArrayList<String>();
@@ -153,6 +165,7 @@ public class RecipeServiceImpl implements RecipeService {
         Map<String, Object> map = new HashMap<>();
         map.put("visitCookie", visitCookie);
         map.put("recipeDto", recipeDto);
+        map.put("commentDtoList", commentDtoList);
 
         return map;
     }

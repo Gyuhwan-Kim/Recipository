@@ -2,7 +2,7 @@ package com.example.recipository.repository;
 
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
-import com.example.recipository.domain.RecipeDto;
+import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.model.entity.TestLink;
 import com.example.recipository.model.entity.TestMenu;
 import com.example.recipository.service.RecipeServiceImpl;
