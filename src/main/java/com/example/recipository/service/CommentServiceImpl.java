@@ -2,12 +2,12 @@ package com.example.recipository.service;
 
 import com.example.recipository.domain.Comment;
 import com.example.recipository.dto.CommentDto;
-import com.example.recipository.dto.CommentRequestDto;
 import com.example.recipository.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -45,6 +45,21 @@ public class CommentServiceImpl implements CommentService{
             map.put("beAdded", false);
 
             return map;
+        }
+    }
+
+    // 댓글 삭제 (사실상 수정)
+    @Override
+    public boolean delComment(Long commentId) {
+        try{
+            // 기존 댓글의 data를 불러와서 comment 내용을 바꿔서 다시 save(update)
+            Comment comment = commentRepository.findById(commentId).get();
+            comment.updateComment(true);
+            commentRepository.save(comment);
+
+            return true;
+        } catch(Exception e){
+            return false;
         }
     }
 }

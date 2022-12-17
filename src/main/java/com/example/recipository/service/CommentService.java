@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface CommentService {
     Map<String, Object> addComment(CommentDto.CommentRequestDto commentDto, String writer);
+    boolean delComment(Long commentId);
 }

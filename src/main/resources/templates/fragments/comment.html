@@ -9,16 +9,20 @@
         <span th:text="${comment.writer}"></span>
         <span th:text="|/ ${comment.regDate}|"></span>
     </div>
-    <input type="text" class="form-control col"
+    <input type="text" th:id="|input${comment.commentId}|" class="form-control col"
            style="background-color: white;" th:value="${comment.comment}" disabled>
-    <button th:data-num="${comment.groupId}"
+    <button th:if="${comment.beDeleted} == false"
+            th:data-num="${comment.groupId}"
             th:data-text="${comment.writer}"
+            th:id = "|reply${comment.commentId}|"
             sec:authorize="isAuthenticated()"
             class="btn btn-light float-end col-1 replyBtn" type="submit"
             style="width: 70px;">답글</button>
-    <button th:if="${comment.writer} == ${#authentication.name}"
-            class="btn btn-light float-end col-1 deleteBtn" type="submit"
-            style="width: 70px;">삭제</button>
+    <a th:if="${comment.writer} == ${#authentication.name} and ${comment.beDeleted} == false"
+            th:id = "|delete${comment.commentId}|"
+            th:href="@{/user/del-comment/{commentId}(commentId=${comment.commentId})}"
+            class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
+            style="width: 70px;">삭제</a>
 </div>
 <div th:fragment="reply(comment)"
      th:class="|row reply groupId${comment.groupId}|"
@@ -35,16 +39,21 @@
             <span th:text="${comment.writer}"></span>
             <span th:text="|/ ${comment.regDate}|"></span>
         </div>
-        <input type="text" id="" name="" class="form-control col"
+        <input type="text" th:id="|input${comment.commentId}|" class="form-control col"
                style="background-color: white;" th:value="${comment.comment}" disabled>
-        <button th:data-num="${comment.groupId}"
+        <button th:if="${comment.beDeleted} == false"
+                th:data-num="${comment.groupId}"
                 th:data-text="${comment.writer}"
+                th:id = "|reply${comment.commentId}|"
                 sec:authorize="isAuthenticated()"
                 class="btn btn-light float-end col-1 replyBtn" type="submit"
                 style="width: 70px;">답글</button>
-        <button th:if="${comment.writer} == ${#authentication.name}"
-                class="btn btn-light float-end col-1" type="submit"
-                style="width: 70px;">삭제</button>
+        <a th:if="${comment.writer} == ${#authentication.name} and ${comment.beDeleted} == false"
+                th:data-num="${comment.commentId}"
+                th:id = "|delete${comment.commentId}|"
+                th:href="@{/user/del-comment/{commentId}(commentId=${comment.commentId})}"
+                class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
+                style="width: 70px;">삭제</a>
     </div>
 </div>
 </html>

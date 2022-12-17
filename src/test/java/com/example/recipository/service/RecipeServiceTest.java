@@ -97,4 +97,13 @@ public class RecipeServiceTest {
 
         commentRepository.save(comment);
     }
+
+    // comment delete test
+    @Test
+    public void test5(){
+        Comment comment = Comment.builder()
+                    .commentId(58L)
+                    .build();
+        commentRepository.delete(comment);
+    }
 }

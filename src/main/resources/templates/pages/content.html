@@ -25,6 +25,7 @@
 <div class="container">
     <div th:replace="fragments/navibar :: navi"></div>
     <div class="content">
+        <span th:text="${#httpServletRequest.getContextPath()}"></span>
         <h2 class="row col-8">게시글</h2>
         <div class="row col-8">
             <div th:if="${recipe.writer} == ${#authentication.name}">

@@ -42,5 +42,6 @@ public class CommentDto {
         private String comment;
         private Long groupId;
         private String regDate;
+        private boolean beDeleted;
     }
 }

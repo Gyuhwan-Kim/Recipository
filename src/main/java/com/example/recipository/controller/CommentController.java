@@ -7,8 +7,7 @@ import com.example.recipository.service.CommentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +31,19 @@ public class CommentController {
 
         // 댓글을 추가하는 service logic을 통과한 후 ResponseEntity로 return
         Map<String, Object> map = commentService.addComment(commentDto, writer);
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    // 댓글 삭제 (사실상 내용만 수정)
+    @PutMapping("/user/del-comment/{commentId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Object> delComment(@PathVariable Long commentId){
+
+        // Map에 삭제한 댓글 id와 삭제 성공 여부를 담아 return
+        Map<String, Object> map = new HashMap<>();
+        map.put("commentId", commentId);
+        map.put("beDeleted", commentService.delComment(commentId));
 
         return ResponseEntity.ok().body(map);
     }
