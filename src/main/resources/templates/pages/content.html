@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>write.html</title>
+    <title>content.html</title>
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
@@ -29,9 +29,9 @@
         <h2 class="row col-8">게시글</h2>
         <div class="row col-8">
             <div th:if="${recipe.writer} == ${#authentication.name}">
-                <a th:href="@{/user/delete/{contentId}(contentId = ${recipe.contentId})}"
+                <a th:href="@{/user/content/delete/{contentId}(contentId = ${recipe.contentId})}"
                    class="btn btn-light float-end">삭제</a>
-                <a th:href="@{/user/content_updateform/{contentId}(contentId = ${recipe.contentId})}"
+                <a th:href="@{/user/content/updateform/{contentId}(contentId = ${recipe.contentId})}"
                    class="btn btn-light float-end">수정</a>
             </div>
         </div>
@@ -92,9 +92,14 @@
         </div>
         <div class="row col-8">
             <label for="link" style="width: 150px;">참고 링크</label>
-            <ul id="link">
+            <ul id="link" th:if="${recipe.link.size} != 0">
                 <li th:each="link : ${recipe.link}">
                     <a href="" class="refLink form-control" th:text="${link}"></a>
+                </li>
+            </ul>
+            <ul id="link" th:unless="${recipe.link.size} != 0">
+                <li>
+                    <a href="" class="refLink form-control">없음</a>
                 </li>
             </ul>
         </div>

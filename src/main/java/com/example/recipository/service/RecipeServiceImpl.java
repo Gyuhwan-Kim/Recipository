@@ -99,29 +99,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
         // link repository로부터 data를 가져올 contentId를 담은 dummy entity
-        Recipe recipe = Recipe.builder()
-                .contentId(contentId)
-                .build();
-        // link repository로부터 가져온 List<Link>
-        List<Link> linkList = linkRepository.findAllByRecipe(recipe);
-
-        // List<Link> 의 한 Link로부터의 온전한 Recipe entity를 Dto로
-        recipe = linkList.get(0).getRecipe();
+        Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
         RecipeDto recipeDto = recipe.toDto();
 
         List<CommentDto.CommentResponseDto> commentDtoList = recipe.getCommentDtoList();
-//        List<Comment> commentList = commentRepository.findAllByRecipeOrderByGroupIdAscCommentIdAsc(recipe);
-//        List<CommentDto> commentDtoList = new ArrayList<>();
-//        commentList.forEach(tmp -> {
-//            commentDtoList.add(tmp.toDto());
-//        });
-
-        // List<Link> 에서 String link로 List<String> 을 만들어 Dto에 setting
-        List<String> strLinkList = new ArrayList<String>();
-        linkList.forEach(link -> {
-            strLinkList.add(link.getLink());
-        });
-        recipeDto.setLink(strLinkList);
 
         // Cookie의 조회수 중복 방지를 위한 작업
         // return을 위한 Cookie variable

@@ -28,7 +28,7 @@ public class Recipe extends BaseTime {
     private String imagePath;
     private Long viewCount;
     private Long likeCount;
-    @Transient
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     private List<Link> link;
     private String category;
     private boolean bePublic;
