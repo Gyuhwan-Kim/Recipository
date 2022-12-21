@@ -12,4 +12,6 @@ public interface RecipeService {
     List<Recipe> getRecipeList();
     boolean write(RecipeDto recipeDto, MultipartFile multipartFile, String username);
     Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList);
+    RecipeDto getRecipeOnly(Long contentId);
+    boolean update(Long contentId, RecipeDto recipeDto, MultipartFile multipartFile);
 }

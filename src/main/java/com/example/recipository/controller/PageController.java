@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.service.RecipeServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.Map;
 
 @Controller
@@ -66,6 +68,17 @@ public class PageController {
         mView.addObject("commentList", map.get("commentDtoList"));
         // 이동하고자 하는 페이지 정보와 함께 return
         mView.setViewName("pages/content");
+
+        return mView;
+    }
+
+    @GetMapping("/user/content/updateform/{contentId}")
+    public ModelAndView updateForm(@PathVariable Long contentId){
+
+        ModelAndView mView = new ModelAndView();
+
+        mView.addObject("recipe", recipeService.getRecipeOnly(contentId));
+        mView.setViewName("pages/content_updateform");
 
         return mView;
     }

@@ -43,11 +43,13 @@
             <label for="" style="float: none; margin:0 auto;">카테고리</label>
         </div>
         <div class="row col-8">
-            <label for="link" style="width: 150px;">참고 링크</label>
+            <label for="linkList" style="width: 150px;">참고 링크</label>
             <button id="linkAddBtn" class="btn btn-secondary" style="width: 110px;">링크 추가</button>
-            <ul>
-                <li id="linkList">
-                    <input type="text" class="refLink form-control" id="link" name="link">
+            <ul id="linkList">
+                <li class="row linkForm">
+                    <input type="text" class="refLink form-control col" name="link">
+                    <button type="button" class="btn-close col-1"
+                            style="margin-top:10px; height: auto; display: none;"></button>
                 </li>
             </ul>
         </div>

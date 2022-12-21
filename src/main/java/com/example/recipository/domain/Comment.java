@@ -21,7 +21,7 @@ public class Comment extends BaseTime {
     private Long commentId;
     private String writer;
     private String comment;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_id")
     private Recipe recipe;
     private Long groupId;

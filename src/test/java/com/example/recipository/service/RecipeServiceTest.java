@@ -4,6 +4,7 @@ import com.example.recipository.domain.Comment;
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.dto.CommentDto;
+import com.example.recipository.dto.LinkDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.LinkRepository;
@@ -105,5 +106,101 @@ public class RecipeServiceTest {
                     .commentId(58L)
                     .build();
         commentRepository.delete(comment);
+    }
+
+    // recipe update test
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void test6(){
+        Long contentId = 7L;
+
+        Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
+
+        RecipeDto recipeDto = recipe.toDto();
+        System.out.println(recipeDto);
+
+        List<LinkDto> linkDtoList = new ArrayList<>();
+        recipe.getLink().forEach(tmp -> {
+//            linkDtoList.add(tmp.toDto());
+        });
+        System.out.println(linkDtoList);
+
+        RecipeDto newRecipeDto = new RecipeDto();
+        List<String> newLinkList = new ArrayList<>();
+        newLinkList.add("ccc");
+//        newLinkList.add("bbb");
+        newRecipeDto.setLink(newLinkList);
+
+        var dbLength = linkDtoList.size();
+        var newLength = newLinkList.size();
+
+        // link 수가 줄어든 경우
+        if(dbLength > newLength){
+            if(newLength == 0){
+                linkRepository.deleteAll(recipe.getLink());
+            } else {
+                for(int i = dbLength - 1; i >= 0; i--){
+                    if(i > newLength -1){
+                        linkRepository.deleteById(linkDtoList.get(i).getId());
+                        linkDtoList.remove(i);
+                    } else {
+                        linkDtoList.get(i).setLink(newLinkList.get(i));
+                    }
+                }
+            }
+        } else {
+            for(int i = 0; i < newLength; i++){
+                // link 수가 늘어난 경우
+                if(newLength > dbLength && i > dbLength - 1){
+                    linkDtoList.add(new LinkDto());
+                }
+                linkDtoList.get(i).setLink(newLinkList.get(i));
+                // link 수가 그대로인 경우
+                if(i == dbLength - 1 && dbLength == newLength){
+                    break;
+                }
+            }
+        }
+
+        linkDtoList.forEach(tmp -> {
+            if(newLength == 0){
+                return;
+            }
+//            Link newLink = tmp.toEntity(recipe);
+//            linkRepository.save(newLink);
+        });
+    }
+
+    // recipe update test2
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void test7(){
+        Long contentId = 11L;
+
+        Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
+
+        RecipeDto recipeDto = recipe.toDto();
+        System.out.println(recipeDto);
+
+        List<LinkDto> linkDtoList = new ArrayList<>();
+        recipe.getLink().forEach(tmp -> {
+//            linkDtoList.add(tmp.toDto());
+        });
+        System.out.println(linkDtoList);
+
+        RecipeDto newRecipeDto = new RecipeDto();
+        List<String> newLinkList = new ArrayList<>();
+        newLinkList.add("ccc");
+//        newLinkList.add("bbb");
+        newRecipeDto.setLink(newLinkList);
+
+        var dbLength = linkDtoList.size();
+        var newLength = newLinkList.size();
+
+        if(dbLength > newLength){
+            recipe.getLink().subList(newLength, dbLength).clear();
+        }
     }
 }

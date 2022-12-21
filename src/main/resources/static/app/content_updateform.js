@@ -1,3 +1,14 @@
+    window.onload = function(){
+        var closeBtns = document.querySelectorAll(".btn-close");
+        closeBtns.forEach(tmp => {
+            tmp.addEventListener("click", function(e){
+                e.preventDefault();
+
+                tmp.parentElement.remove();
+            });
+        });
+    }
+
     // 이미지 업로드 버튼을 눌렀을 때 input type file 강제 클릭
     document.querySelector("#imageUploadBtn").addEventListener("click", function(e){
         e.preventDefault();
@@ -57,10 +68,10 @@
             return response.json();
         }).then(function(data){
             if(data.beSaved){
-                alert("게시글 작성을 완료했습니다.");
-                location.href = "/";
+                alert("게시글을 수정했습니다.");
+//                location.href = "/";
             } else {
-                alert("게시글 작성에 실패했습니다. 문제가 반복된다면 문의 바랍니다.");
+                alert("게시글 수정에 실패했습니다. 문제가 반복된다면 문의 바랍니다.");
             }
         });
     });

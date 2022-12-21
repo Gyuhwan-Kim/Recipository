@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>content_updateform.html</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<link rel="stylesheet" href="/lib/css/bootstrap.css">
+<link rel="stylesheet" href="/lib/css/contentform.css">
+<style>
+    .search_form{
+      display:inline;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/navibar :: navi"></div>
+    <form th:action="|/user/content/update/${recipe.contentId}|" id="contentForm" enctype="multipart/form-data" method="post">
+        <h2 class="row col-8">게시글 수정</h2>
+        <div class="row col-8">
+            <label for="title">제목</label>
+            <div class="col">
+                <input type="text" id="title" name="title" class="form-control" th:value="${recipe.title}">
+            </div>
+        </div>
+        <div class="row col-8">
+            <label for="writer">작성자</label>
+            <div class="col">
+                <input type="text" id="writer" name="writer" class="form-control"
+                       style="background-color: white;" th:value="${recipe.writer}" disabled>
+            </div>
+        </div>
+        <div class="row col-8">
+            <label for="content">내용</label>
+            <div class="col-8 input">
+                <textarea name="content" id="content" cols="30" rows="10"
+                          class="form-control" style="height: 240px;"
+                          th:text="${recipe.content}"></textarea>
+            </div>
+            <div class="col-4" style="padding-left: 35px;">
+                <a href="" id="imageUploadBtn">
+                    <img src="/lib/image/contentform_default_img.png" alt="" id="image"
+                         name="image" style="width: 240px; height: 240px;">
+                </a>
+            </div>
+        </div>
+        <input type="file" id="imageFile" name="imageFile" style="display:none">
+        <div class="row col-8" style="float: none; margin:0 auto;">
+            <label for="" style="float: none; margin:0 auto;">카테고리</label>
+        </div>
+        <div class="row col-8">
+            <label for="linkList" style="width: 150px;">참고 링크</label>
+            <button id="linkAddBtn" class="btn btn-secondary" style="width: 110px;">링크 추가</button>
+            <ul id="linkList" th:if="${recipe.link.size} != 0">
+                <li class="row linkForm" th:each="link, i : ${recipe.link}">
+                    <input type="text" class="refLink form-control col" name="link" th:value="${link}">
+                    <button th:if="${i.index} == 0" type="button" class="btn-close col-1"
+                            style="margin-top:10px; height: auto; display: none;"></button>
+                    <button th:unless="${i.index} == 0" type="button" class="btn-close col-1"
+                            style="margin-top:10px; height: auto;"></button>
+                </li>
+            </ul>
+            <ul id="linkList" th:unless="${recipe.link.size} != 0">
+                <li class="row linkForm">
+                    <input type="text" class="refLink form-control col" name="link">
+                    <button type="button" class="btn-close col-1"
+                            style="margin-top:10px; height: auto; display: none;"></button>
+                </li>
+            </ul>
+        </div>
+        <div class="row col-8" style="width: 240px;" th:if="${recipe.bePublic} == true">
+            <input type="checkbox" id="bePublic" name="bePublic" class="form-check-input"
+                   style="margin-top: 10px;" checked>
+            <label for="bePublic" style="padding-right: 0px; width: 210px;">게시글 공개 여부</label>
+        </div>
+        <div class="row col-8" style="width: 240px;" th:unless="${recipe.bePublic} == true">
+            <input type="checkbox" id="bePublic" name="bePublic" class="form-check-input"
+                   style="margin-top: 10px;" checked>
+            <label for="bePublic" style="padding-right: 0px; width: 210px;">게시글 공개 여부</label>
+        </div>
+        <div class="row col-5">
+            <button type="submit" id="submitBtn" class="btn btn-primary col">수정 완료</button>
+            <a href="#" id="cancelBtn" class="btn btn-light text-decoration-none col">수정 취소</a>
+        </div>
+    </form>
+</div>
+</body>
+<script src="/lib/js/bootstrap.bundle.js"></script>
+<script src="/app/content_updateform.js"></script>
+</html>

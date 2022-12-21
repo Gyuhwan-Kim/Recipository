@@ -26,11 +26,24 @@ public class RecipeController {
 
         // 로그인 한 사용자의 username 정보
         String username = spUser.getUsername();
+        System.out.println(recipeDto);
 
         // 게시글을 작성하는 service logic
         boolean beSaved = recipeService.write(recipeDto, imageFile, username);
         Map<String, Object> map = new HashMap<>();
         map.put("beSaved", beSaved);
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    @PostMapping("/user/content/update/{contentId}")
+    public ResponseEntity<Object> update(@PathVariable Long contentId,
+                                         RecipeDto recipeDto,
+                                         MultipartFile imageFile){
+
+        Map<String, Object> map = new HashMap<>();
+        recipeService.update(contentId, recipeDto, imageFile);
+        map.put("recipe", recipeDto);
 
         return ResponseEntity.ok().body(map);
     }

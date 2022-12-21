@@ -2,6 +2,7 @@ package com.example.recipository.domain;
 
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.CommentResponseDto;
+import com.example.recipository.dto.LinkDto;
 import com.example.recipository.dto.RecipeDto;
 import lombok.*;
 
@@ -28,11 +29,12 @@ public class Recipe extends BaseTime {
     private String imagePath;
     private Long viewCount;
     private Long likeCount;
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Link> link;
     private String category;
     private boolean bePublic;
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("groupId asc, commentId asc")
     private List<Comment> commentList;
     @Column(nullable = false)
@@ -71,6 +73,18 @@ public class Recipe extends BaseTime {
         link.forEach(tmp -> {
             tmp.setRecipe(this);
         });
+    }
+
+    public void updateRecipe(String newTitle, String newContent,
+                             String newImagePath, boolean newBePublic,
+                             List<Link> newLink){
+        this.title = newTitle;
+        this.content = newContent;
+        if(newImagePath != null){
+            this.imagePath = newImagePath;
+        }
+        this.bePublic = newBePublic;
+        this.link = newLink;
     }
 
     public List<CommentDto.CommentResponseDto> getCommentDtoList(){
