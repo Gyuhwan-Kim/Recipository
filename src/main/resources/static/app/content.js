@@ -1,3 +1,36 @@
+    // 게시글 삭제 클릭 시 동작
+    document.querySelector("#contentDeleteBtn").addEventListener("click", function(e){
+        e.preventDefault();
+
+        var wantToDelete = confirm("게시글을 삭제하겠습니까?");
+        if(wantToDelete){
+            var url = this.getAttribute("href");
+
+            var token = document.querySelector("meta[name=_csrf]").content;
+            var header = document.querySelector("meta[name=_csrf_header]").content;
+
+            var promise = fetch(url, {
+                method: "DELETE",
+                headers: {
+                    "header": header,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": token
+                }
+            });
+
+            promise.then(function(response){
+                return response.json();
+            }).then(function(data){
+                if(data.beDeleted){
+                    alert("게시글을 삭제했습니다.");
+                    location.href = "/";
+                } else {
+                    alert("게시글을 삭제할 수 없습니다. 문제가 반복된다면 문의 바랍니다.");
+                }
+            });
+        }
+    });
+
     // 답글 클릭 시 focus 이동 및 동작
     document.querySelectorAll(".replyBtn").forEach(tmp => {
         tmp.addEventListener("click", function(e){

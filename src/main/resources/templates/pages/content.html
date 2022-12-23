@@ -30,7 +30,7 @@
         <div class="row col-8">
             <div th:if="${recipe.writer} == ${#authentication.name}">
                 <a th:href="@{/user/content/delete/{contentId}(contentId = ${recipe.contentId})}"
-                   class="btn btn-light float-end">삭제</a>
+                   id="contentDeleteBtn" class="btn btn-light float-end">삭제</a>
                 <a th:href="@{/user/content/updateform/{contentId}(contentId = ${recipe.contentId})}"
                    class="btn btn-light float-end">수정</a>
             </div>

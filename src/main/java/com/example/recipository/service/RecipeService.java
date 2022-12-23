@@ -14,4 +14,6 @@ public interface RecipeService {
     Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList);
     RecipeDto getRecipeOnly(Long contentId);
     boolean update(Long contentId, RecipeDto recipeDto, MultipartFile multipartFile);
+
+    boolean delete(Long contentId);
 }

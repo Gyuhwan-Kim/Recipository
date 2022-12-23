@@ -158,7 +158,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeDto;
     }
 
-    // 게시글 수정
+    // 게시글을 수정하는 service logic
     @Override
     public boolean update(Long contentId, RecipeDto recipeDto, MultipartFile imageFile) {
         try {
@@ -210,6 +210,18 @@ public class RecipeServiceImpl implements RecipeService {
                                 recipeDto.getImagePath(), recipeDto.isBePublic(),
                                 linkList);
             recipeRepository.save(recipe);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 게시글을 삭제하는 service logic
+    @Override
+    public boolean delete(Long contentId) {
+        try{
+            recipeRepository.deleteById(contentId);
 
             return true;
         } catch (Exception e) {

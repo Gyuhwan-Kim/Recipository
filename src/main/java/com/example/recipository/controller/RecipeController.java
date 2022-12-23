@@ -19,6 +19,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
+    // 게시글을 작성하는 controller method
     @PostMapping("/user/write")
     public ResponseEntity<Object> write(@ModelAttribute RecipeDto recipeDto,
                                         @RequestPart MultipartFile imageFile,
@@ -36,6 +37,7 @@ public class RecipeController {
         return ResponseEntity.ok().body(map);
     }
 
+    // 게시글을 수정하는 controller method
     @PostMapping("/user/content/update/{contentId}")
     public ResponseEntity<Object> update(@PathVariable Long contentId,
                                          RecipeDto recipeDto,
@@ -44,6 +46,16 @@ public class RecipeController {
         Map<String, Object> map = new HashMap<>();
         recipeService.update(contentId, recipeDto, imageFile);
         map.put("recipe", recipeDto);
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    // 게시글을 삭제하는 controller method
+    @DeleteMapping("/user/content/delete/{contentId}")
+    public ResponseEntity<Object> delete(@PathVariable Long contentId){
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("beDeleted", recipeService.delete(contentId));
 
         return ResponseEntity.ok().body(map);
     }
