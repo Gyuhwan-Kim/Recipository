@@ -54,7 +54,7 @@
         var header = document.querySelector("meta[name=_csrf_header]").content;
 
         var promise = fetch(url, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "header": header,
                 "X-Requested-With": "XMLHttpRequest",
@@ -67,9 +67,9 @@
         promise.then(function(response){
             return response.json();
         }).then(function(data){
-            if(data.beSaved){
+            if(data.beUpdated){
                 alert("게시글을 수정했습니다.");
-//                location.href = "/";
+                location.href = document.referrer;
             } else {
                 alert("게시글 수정에 실패했습니다. 문제가 반복된다면 문의 바랍니다.");
             }

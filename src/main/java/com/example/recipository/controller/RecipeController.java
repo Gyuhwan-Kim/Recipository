@@ -38,14 +38,13 @@ public class RecipeController {
     }
 
     // 게시글을 수정하는 controller method
-    @PostMapping("/user/content/update/{contentId}")
+    @PutMapping("/user/content/update/{contentId}")
     public ResponseEntity<Object> update(@PathVariable Long contentId,
                                          RecipeDto recipeDto,
                                          MultipartFile imageFile){
 
         Map<String, Object> map = new HashMap<>();
-        recipeService.update(contentId, recipeDto, imageFile);
-        map.put("recipe", recipeDto);
+        map.put("beUpdated", recipeService.update(contentId, recipeDto, imageFile));
 
         return ResponseEntity.ok().body(map);
     }
