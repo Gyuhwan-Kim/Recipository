@@ -1,19 +1,21 @@
 package com.example.recipository.config;
 
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import com.example.recipository.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.CacheControl;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.concurrent.TimeUnit;
-
-//@Configuration
+@Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**")
-//                .addResourceLocations("classpath:/static/", "classpath:/templates/")
-//                .setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES));
-//    }
+    private final AuthInterceptor authInterceptor;
+
+    public MvcConfiguration(AuthInterceptor authInterceptor) {
+        this.authInterceptor = authInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/user/content/**", "/user/del-comment/**");
+    }
 }

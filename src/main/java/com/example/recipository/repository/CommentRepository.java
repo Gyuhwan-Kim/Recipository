@@ -13,4 +13,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Long getSequenceValue();
 
     List<Comment> findAllByRecipeOrderByGroupIdAscCommentIdAsc(Recipe recipe);
+
+    Comment getCommentByCommentId(Long commentId);
 }

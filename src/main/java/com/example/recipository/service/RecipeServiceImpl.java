@@ -1,11 +1,8 @@
 package com.example.recipository.service;
 
-import com.example.recipository.domain.Comment;
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.dto.CommentDto;
-import com.example.recipository.dto.CommentResponseDto;
-import com.example.recipository.dto.LinkDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.LinkRepository;

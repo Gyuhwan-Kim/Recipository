@@ -37,7 +37,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests(request ->
                         request.antMatchers("/", "/signinform", "/signin",
-                                        "/duplcheck", "/content/**")
+                                        "/duplcheck", "/content/**", "/banned")
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )

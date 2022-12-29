@@ -1,6 +1,5 @@
 package com.example.recipository.controller;
 
-import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.service.RecipeServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.Map;
 
 @Controller
@@ -81,5 +79,12 @@ public class PageController {
         mView.setViewName("pages/content_updateform");
 
         return mView;
+    }
+
+    // 게시글 수정 및 삭제, 댓글 삭제에 대해 권한이 없는 경우
+    // ban page로 이동
+    @GetMapping("/banned")
+    public String banned(){
+        return "pages/banned";
     }
 }
