@@ -21,7 +21,7 @@ public class CommentController {
     }
 
     // 댓글 작성 통합
-    @PostMapping("/user/add-comment")
+    @PostMapping("/user/comments")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Object> addComment(CommentDto.CommentRequestDto commentDto,
                                              @AuthenticationPrincipal SpUser spUser){
@@ -36,7 +36,7 @@ public class CommentController {
     }
 
     // 댓글 삭제 (사실상 내용만 수정)
-    @PutMapping("/user/del-comment/{commentId}")
+    @PutMapping("/user/comments/{commentId}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Object> delComment(@PathVariable Long commentId){
 

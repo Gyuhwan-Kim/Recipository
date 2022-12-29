@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/navibar :: navi"></div>
-    <form th:action="|/user/content/update/${recipe.contentId}|" id="contentForm" enctype="multipart/form-data" method="post">
+    <form th:action="|/user/contents/${recipe.contentId}|" id="contentForm" enctype="multipart/form-data" method="post">
         <h2 class="row col-8">게시글 수정</h2>
         <div class="row col-8">
             <label for="title">제목</label>

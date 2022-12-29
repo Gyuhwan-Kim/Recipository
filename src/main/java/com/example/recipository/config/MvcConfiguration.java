@@ -16,6 +16,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/user/content/**", "/user/del-comment/**");
+                .addPathPatterns("/user/contents/**", "/user/comments/**")
+                .excludePathPatterns("/user/contents", "/user/comments");
     }
 }

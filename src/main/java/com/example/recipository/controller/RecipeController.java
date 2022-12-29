@@ -20,7 +20,7 @@ public class RecipeController {
     }
 
     // 게시글을 작성하는 controller method
-    @PostMapping("/user/write")
+    @PostMapping("/user/contents")
     public ResponseEntity<Object> write(@ModelAttribute RecipeDto recipeDto,
                                         @RequestPart MultipartFile imageFile,
                                         @AuthenticationPrincipal SpUser spUser){
@@ -38,7 +38,7 @@ public class RecipeController {
     }
 
     // 게시글을 수정하는 controller method
-    @PutMapping("/user/content/update/{contentId}")
+    @PutMapping("/user/contents/{contentId}")
     public ResponseEntity<Object> update(@PathVariable Long contentId,
                                          RecipeDto recipeDto,
                                          MultipartFile imageFile){
@@ -50,7 +50,7 @@ public class RecipeController {
     }
 
     // 게시글을 삭제하는 controller method
-    @DeleteMapping("/user/content/delete/{contentId}")
+    @DeleteMapping("/user/contents/{contentId}")
     public ResponseEntity<Object> delete(@PathVariable Long contentId){
 
         Map<String, Object> map = new HashMap<>();

@@ -127,7 +127,7 @@ public class RecipeServiceImpl implements RecipeService {
             // 새로 만들어서 return
             visitCookie = new Cookie("visit", contentId.toString());
             visitCookie.setDomain("localhost");
-            visitCookie.setPath("/content");
+            visitCookie.setPath("/contents");
             visitCookie.setMaxAge(60*60*24);
             visitCookie.setSecure(true);
             // 조회수 1 증가 및 repository save(update)

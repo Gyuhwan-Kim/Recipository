@@ -20,6 +20,7 @@
             style="width: 70px;">답글</button>
     <a th:if="${comment.writer} == ${#authentication.name} and ${comment.beDeleted} == false"
             th:id = "|delete${comment.commentId}|"
+            sec:authorize="isAuthenticated()"
             th:href="@{/user/del-comment/{commentId}(commentId=${comment.commentId})}"
             class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
             style="width: 70px;">삭제</a>
@@ -51,7 +52,8 @@
         <a th:if="${comment.writer} == ${#authentication.name} and ${comment.beDeleted} == false"
                 th:data-num="${comment.commentId}"
                 th:id = "|delete${comment.commentId}|"
-                th:href="@{/user/del-comment/{commentId}(commentId=${comment.commentId})}"
+                sec:authorize="isAuthenticated()"
+                th:href="@{/user/comments/{commentId}(commentId=${comment.commentId})}"
                 class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
                 style="width: 70px;">삭제</a>
     </div>

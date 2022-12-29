@@ -28,12 +28,12 @@ public class PageController {
         return mView;
     }
 
-    @GetMapping("/loginform")
+    @GetMapping("/login-form")
     public String goLogin(){
         return "pages/loginform";
     }
 
-    @GetMapping("/signinform")
+    @GetMapping("/signin-form")
     public String goSignin(){
         return "pages/signinform";
     }
@@ -43,13 +43,13 @@ public class PageController {
         return "pages/login-failure";
     }
 
-    @GetMapping("/user/contentform")
+    @GetMapping("/user/contents-form")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String goWrite(){
         return "pages/contentform";
     }
 
-    @GetMapping("/content/{contentId}")
+    @GetMapping("/contents/{contentId}")
     public ModelAndView goContent(@PathVariable Long contentId,
                                   HttpServletRequest request,
                                   HttpServletResponse response){
@@ -70,7 +70,7 @@ public class PageController {
         return mView;
     }
 
-    @GetMapping("/user/content/updateform/{contentId}")
+    @GetMapping("/user/contents/update-form/{contentId}")
     public ModelAndView updateForm(@PathVariable Long contentId){
 
         ModelAndView mView = new ModelAndView();
