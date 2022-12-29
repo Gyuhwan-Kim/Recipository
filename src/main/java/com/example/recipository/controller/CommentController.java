@@ -27,7 +27,7 @@ public class CommentController {
                                              @AuthenticationPrincipal SpUser spUser){
 
         // Authentication principal인 UserDetails 에서 사용자 정보를 받아옴
-        String writer = spUser.getUsername();
+        String writer = spUser.getName();
 
         // 댓글을 추가하는 service logic을 통과한 후 ResponseEntity로 return
         Map<String, Object> map = commentService.addComment(commentDto, writer);
