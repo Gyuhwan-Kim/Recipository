@@ -1,0 +1,14 @@
+    .search_form{
+      display:inline;
+    }
+    .navBtn{
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+    .logout{
+      padding-bottom: 0px;
+      border-bottom-width: 0px;
+      padding-top: 0px;
+      border-top-width: 0px;
+      margin-bottom: 2px;
+    }

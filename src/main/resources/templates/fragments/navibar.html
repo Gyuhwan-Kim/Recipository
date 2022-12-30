@@ -3,23 +3,43 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="navi">
-  <a href="/" th:href="@{/}">
-    <img src="/lib/image/logo.png" alt="">
-  </a>
-  <form class="search_form" action="">
-    <select name="" id="">
-      <option value="">제목</option>
-      <option value="">내용</option>
-      <option value="">제목+내용</option>
-    </select>
-    <input type="text" placeholder="검색어를 입력하세요.">
-      <button class="btn btn-light" type="submit">검색</button>
-    </form>
-    <a class="btn btn-primary" href="/login-form" sec:authorize="!isAuthenticated()">로그인</a>
-    <form th:action="@{/logout}" method="post">
-      <button class="btn btn-secondary" th:href="@{/logout}" sec:authorize="isAuthenticated()">로그아웃</button>
-    </form>
-    <a class="btn btn-success" href="/signin-form" sec:authorize="!isAuthenticated()">회원가입</a>
+<div th:fragment="navi" class="row">
+  <div class="col-3 text-center">
+    <a href="/" th:href="@{/}">
+      <img src="/lib/image/logo.png" alt="" style="width: 100%;">
+    </a>
   </div>
+  <div class="col" style="padding-top: 85px;">
+    <form class="search_form" action="">
+      <div class="row">
+      <div class="col">
+        <select class="form-select text-center" name="" id="" style="width: 130px;">
+          <option value="">제목</option>
+          <option value="">내용</option>
+          <option value="">제목+내용</option>
+        </select>
+      </div>
+      <div class="col-7">
+        <label for="" style="display: none;"></label>
+        <input type="text" class="form-control text-center" placeholder="검색어를 입력하세요.">
+      </div>
+      <div class="col">
+        <button class="btn btn-light col" type="submit">검색</button>
+      </div>
+      </div>
+    </form>
+  </div>
+  <div class="row col-3 justify-content-center" style="padding-top: 85px; padding-bottom: 85px;">
+    <a class="btn btn-primary navBtn col-5" href="/login-form"
+       sec:authorize="!isAuthenticated()">로그인</a>
+    <a class="btn btn-success navBtn col-5" href="/signin-form"
+       sec:authorize="!isAuthenticated()">회원가입</a>
+    <a class="btn btn-success navBtn col-5" href="/user/my-page"
+       sec:authorize="isAuthenticated()">마이 페이지</a>
+    <form class="btn btn-secondary navBtn col-5" th:action="@{/logout}" method="post"
+          sec:authorize="isAuthenticated()" style="height: 38px;">
+      <button class="btn btn-secondary logout">로그아웃</button>
+    </form>
+  </div>
+</div>
 </html>
