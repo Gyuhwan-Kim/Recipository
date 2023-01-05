@@ -1,6 +1,7 @@
 package com.example.recipository.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto {
     @Email(message = "이메일 양식에 맞게 작성해주세요.")
     private String email;
@@ -18,4 +20,5 @@ public class UserDto {
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$",
             message = "영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.")
     private String password;
+    private String oldPassword;
 }

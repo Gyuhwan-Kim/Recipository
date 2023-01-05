@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Recipe getRecipeByContentId(Long contentId);
+    List<Recipe> getAllByWriter(String writer);
 }

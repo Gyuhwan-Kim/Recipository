@@ -1,8 +1,12 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.domain.SpUser;
 import com.example.recipository.service.RecipeServiceImpl;
+import com.example.recipository.service.UserServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,12 +18,15 @@ import java.util.Map;
 
 @Controller
 public class PageController {
+    private final UserServiceImpl userService;
     private final RecipeServiceImpl recipeService;
 
-    public PageController(RecipeServiceImpl recipeService) {
+    public PageController(UserServiceImpl userService, RecipeServiceImpl recipeService) {
+        this.userService = userService;
         this.recipeService = recipeService;
     }
 
+    // index page + 출력할 게시글 목록
     @GetMapping(value = {"/"})
     public ModelAndView main(){
         ModelAndView mView = new ModelAndView();
@@ -28,27 +35,32 @@ public class PageController {
         return mView;
     }
 
+    // 로그인 page
     @GetMapping("/login-form")
     public String goLogin(){
         return "pages/loginform";
     }
 
+    // 회원 가입 page
     @GetMapping("/signin-form")
     public String goSignin(){
         return "pages/signinform";
     }
 
+    // 로그인 실패 page
     @GetMapping("/login-failure")
     public String goLoginFailure(){
         return "pages/login-failure";
     }
 
+    // 게시글 작성 page
     @GetMapping("/user/contents-form")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String goWrite(){
         return "pages/contentform";
     }
 
+    // 게시글 page
     @GetMapping("/contents/{contentId}")
     public ModelAndView goContent(@PathVariable Long contentId,
                                   HttpServletRequest request,
@@ -70,6 +82,7 @@ public class PageController {
         return mView;
     }
 
+    // 게시글 수정 page
     @GetMapping("/user/contents/update-form/{contentId}")
     public ModelAndView updateForm(@PathVariable Long contentId){
 
@@ -86,5 +99,47 @@ public class PageController {
     @GetMapping("/banned")
     public String banned(){
         return "pages/banned";
+    }
+
+    // 유저 정보 page
+    @GetMapping("/user/my-page")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ModelAndView goMyPage(@AuthenticationPrincipal SpUser spUser){
+        String writer = spUser.getName();
+
+        ModelAndView mView = new ModelAndView();
+        mView.addObject("recipeList", recipeService.getMyRecipeList(writer));
+        mView.setViewName("pages/my-page");
+
+        return mView;
+    }
+
+    @GetMapping("/user/my-profile")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String goMyProfile(Model model,
+                              @AuthenticationPrincipal SpUser spUser){
+
+        String email = spUser.getEmail();
+        model.addAttribute("profileData", userService.getProfile(email));
+
+        return "fragments/profile-forms :: myProfile";
+    }
+
+    @GetMapping("/user/profile-form")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String goProfileForm(Model model,
+                              @AuthenticationPrincipal SpUser spUser){
+
+        String email = spUser.getEmail();
+        model.addAttribute("profileData", userService.getProfile(email));
+
+        return "fragments/profile-forms :: profileForm";
+    }
+
+    @GetMapping("/user/password-form")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String goPwdForm(){
+
+        return "fragments/profile-forms :: pwdForm";
     }
 }

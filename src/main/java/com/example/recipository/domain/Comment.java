@@ -51,4 +51,8 @@ public class Comment extends BaseTime {
     public void updateComment(boolean beDeleted){
         this.beDeleted = beDeleted;
     }
+
+    public void updateWriter(String writer){
+        this.writer = writer;
+    }
 }

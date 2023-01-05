@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div id="myProfile" th:fragment="myProfile" class="col templateDiv"
+     style="padding-top: 110px; padding-bottom: 110px;">
+  <div class="row col-6" style="float: none; margin:0 auto;">
+    <label for="email" class="form-label">Email</label>
+    <div class="col">
+      <input type="text" th:value="${profileData.email}"
+             class="form-control text-center" disabled>
+      <input type="text" id="email" name="email" th:value="${profileData.email}"
+             class="form-control text-center" style="display: none;">
+    </div>
+  </div>
+  <div class="row col-6" style="float: none; margin:0 auto;">
+    <label for="name" class="form-label">Nickname</label>
+    <div class="col">
+      <input type="text" id="name" name="name" th:value="${profileData.name}"
+             class="form-control text-center" required="required">
+    </div>
+  </div>
+  <div class="row col-6" style="float: none; margin:0 auto;">
+    <button type="submit" id="profileFormBtn" class="btn btn-primary col">프로필 변경</button>
+    <button type="submit" id="pwdFormBtn" class="btn btn-primary col">비밀번호 변경</button>
+  </div>
+</div>
+
+<div id="profileForm" th:fragment="profileForm" class="col templateDiv"
+     style="padding-top: 100px; padding-bottom: 100px;">
+  <div class="row col-6" style="float: none; margin:0 auto;">
+    <label for="email" class="form-label">Email</label>
+    <div class="col">
+      <input type="text" id="email" name="email" th:value="${profileData.email}"
+             class="form-control text-center" disabled>
+    </div>
+  </div>
+  <form th:action="@{/user/profile/nickname}" method="post" id="profileUpdateForm" style="min-width: 400px;">
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <label for="name" class="form-label">Nickname</label>
+      <div class="col">
+        <input type="text" id="name" name="name" th:value="${profileData.name}"
+               class="form-control text-center" required="required">
+      </div>
+      <button th:data="${profileData.name}" style="display: none; margin-right: 12px;"
+              class="duplCheckBtn nameCheck btn btn-secondary col-auto">중복 확인</button>
+      <input type="hidden" id="nameDuplCheck" value="true">
+      <span id="nameConstraint">변경하려면 다른 닉네임을 작성해주세요.</span>
+    </div>
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <button type="submit" id="submitBtn" class="btn btn-primary col">프로필 변경</button>
+    </div>
+  </form>
+</div>
+
+<div id="pwdForm" th:fragment="pwdForm" class="col templateDiv"
+     style="padding-top: 50px; padding-bottom: 50px;">
+  <form th:action="@{/user/profile/password}" method="post" id="pwdUpdateForm" style="min-width: 400px;">
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <label for="oldPassword" class="form-label">Password</label>
+      <div class="col">
+        <input type="text" id="oldPassword" name="oldPassword"
+               class="form-control text-center" required="required">
+      </div>
+    </div>
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <label for="password" class="form-label">New Password</label>
+      <div class="col">
+        <input type="text" id="password" name="password"
+               class="form-control text-center" required="required">
+      </div>
+      <span id="passwordConstraint">영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.</span>
+    </div>
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <label for="pwdCheck" class="form-label">Check New Password</label>
+      <div class="col">
+        <input type="text" id="pwdCheck" name="pwdCheck"
+               class="form-control text-center" required="required">
+      </div>
+      <span id="pwdCheckMsg">비밀 번호가 일치해야 합니다.</span>
+    </div>
+    <div class="row col-6" style="float: none; margin:0 auto;">
+      <button type="submit" id="submitBtn" class="btn btn-primary col">비밀번호 변경</button>
+    </div>
+  </form>
+</div>
+</html>

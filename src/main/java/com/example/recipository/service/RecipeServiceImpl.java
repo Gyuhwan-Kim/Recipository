@@ -225,4 +225,11 @@ public class RecipeServiceImpl implements RecipeService {
             return false;
         }
     }
+
+    @Override
+    public List<Recipe> getMyRecipeList(String writer) {
+        List<Recipe> recipeList = recipeRepository.getAllByWriter(writer);
+
+        return recipeList;
+    }
 }

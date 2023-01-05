@@ -16,4 +16,6 @@ public interface RecipeService {
     boolean update(Long contentId, RecipeDto recipeDto, MultipartFile multipartFile);
 
     boolean delete(Long contentId);
+
+    List<Recipe> getMyRecipeList(String writer);
 }

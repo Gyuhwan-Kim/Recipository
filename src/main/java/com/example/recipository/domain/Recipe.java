@@ -95,4 +95,8 @@ public class Recipe extends BaseTime {
 
         return commentDtoList;
     }
+
+    public void updateWriter(String writer){
+        this.writer = writer;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.recipository.domain;
 
+import com.example.recipository.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,5 +47,20 @@ public class SpUser implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return enabled;
+    }
+
+    public UserDto toDto(){
+        return UserDto.builder()
+                .email(email)
+                .name(name)
+                .build();
+    }
+
+    public void updateName(UserDto userDto){
+        name = userDto.getName();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
     }
 }

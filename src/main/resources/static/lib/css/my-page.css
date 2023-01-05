@@ -1,0 +1,14 @@
+    ul{
+        list-style: none;
+        padding: inherit;
+    }
+    .btn-lg{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .form-label{
+        margin-top: 10px;
+    }
+    #submitBtn, #profileFormBtn, #pwdFormBtn{
+        margin: 12px;
+    }
