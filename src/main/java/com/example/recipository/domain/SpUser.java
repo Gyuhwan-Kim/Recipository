@@ -23,7 +23,7 @@ public class SpUser implements UserDetails {
     private String email;
     private String name;
     private String password;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_id"))
     private Set<SpAuthority> authorities;
 
