@@ -26,7 +26,8 @@
         <span th:text="${#httpServletRequest.getContextPath()}"></span>
         <h2 class="row col-8">게시글</h2>
         <div class="row col-8">
-            <div th:if="${recipe.writer} == ${#authentication.name}">
+            <div th:if="${#authorization.expr('isAuthenticated()')} and
+                        ${recipe.writer} == ${#authentication.getPrincipal().name}">
                 <a th:href="@{/user/contents/{contentId}(contentId = ${recipe.contentId})}"
                    id="contentDeleteBtn" class="btn btn-light float-end">삭제</a>
                 <a th:href="@{/user/contents/update-form/{contentId}(contentId = ${recipe.contentId})}"

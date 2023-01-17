@@ -19,7 +19,9 @@ import java.time.format.DateTimeFormatter;
 public class Comment extends BaseTime {
     @Id
     private Long commentId;
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private SpUser spUser;
     private String comment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_id")
@@ -40,7 +42,7 @@ public class Comment extends BaseTime {
 
         return CommentDto.CommentResponseDto.builder()
                 .commentId(this.commentId)
-                .writer(this.writer)
+                .writer(this.spUser.getName())
                 .comment(comment)
                 .groupId(this.groupId)
                 .regDate(super.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
@@ -50,9 +52,5 @@ public class Comment extends BaseTime {
 
     public void updateComment(boolean beDeleted){
         this.beDeleted = beDeleted;
-    }
-
-    public void updateWriter(String writer){
-        this.writer = writer;
     }
 }

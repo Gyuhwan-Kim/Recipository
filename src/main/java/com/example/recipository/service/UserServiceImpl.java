@@ -117,25 +117,25 @@ public class UserServiceImpl implements UserService {
             // Authentication Principal의 email data를 기반으로 DB에서 사용자 정보를 가져옴
             SpUser user = userRepository.getSpUserByEmail(userDto.getEmail());
 
-            // 게시글 writer 변경
-            // 작성자 정보로 작성한 게시글 정보를 가져와서
-            List<Recipe> recipeList = recipeRepository.getAllByWriter(user.getName());
-            // 각각에 대해 작성자 정보를 update하고
-            recipeList.forEach(tmp -> {
-                tmp.updateWriter(userDto.getName());
-            });
-            // save (update query)
-            recipeRepository.saveAll(recipeList);
+//            // 게시글 writer 변경
+//            // 작성자 정보로 작성한 게시글 정보를 가져와서
+//            List<Recipe> recipeList = recipeRepository.getAllByWriter(user.getName());
+//            // 각각에 대해 작성자 정보를 update하고
+//            recipeList.forEach(tmp -> {
+//                tmp.updateWriter(userDto.getName());
+//            });
+//            // save (update query)
+//            recipeRepository.saveAll(recipeList);
 
-            // 댓글 writer 변경
-            // 작성자 정보로 작성한 댓글 정보를 가져와서
-            List<Comment> commentList = commentRepository.getAllByWriter(user.getName());
-            // 각각에 대해 작성자 정보를 update하고
-            commentList.forEach(tmp -> {
-                tmp.updateWriter(userDto.getName());
-            });
-            // save (update query)
-            commentRepository.saveAll(commentList);
+//            // 댓글 writer 변경
+//            // 작성자 정보로 작성한 댓글 정보를 가져와서
+//            List<Comment> commentList = commentRepository.getAllByWriter(user.getName());
+//            // 각각에 대해 작성자 정보를 update하고
+//            commentList.forEach(tmp -> {
+//                tmp.updateWriter(userDto.getName());
+//            });
+//            // save (update query)
+//            commentRepository.saveAll(commentList);
 
             // 사용자 정보 또한 update 하고 save
             user.updateName(userDto);

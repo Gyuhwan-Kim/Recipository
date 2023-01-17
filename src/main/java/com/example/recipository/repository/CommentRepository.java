@@ -15,6 +15,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByRecipeOrderByGroupIdAscCommentIdAsc(Recipe recipe);
 
     Comment getCommentByCommentId(Long commentId);
-
-    List<Comment> getAllByWriter(String writer);
 }

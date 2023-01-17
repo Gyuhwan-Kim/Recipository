@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -28,6 +29,11 @@ public class SpUser implements UserDetails {
     private Set<SpAuthority> authorities;
 
     private boolean enabled;
+
+    @OneToMany(mappedBy = "spUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Recipe> recipeList;
+    @OneToMany(mappedBy = "spUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Recipe> commentList;
 
     @Override
     public String getUsername() {

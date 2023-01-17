@@ -24,7 +24,9 @@ public class Recipe extends BaseTime {
     @Column(name = "content_id")
     private Long contentId;
     private String title;
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private SpUser spUser;
     private String content;
     private String imagePath;
     private Long viewCount;
@@ -56,7 +58,7 @@ public class Recipe extends BaseTime {
         return RecipeDto.builder()
                 .contentId(contentId)
                 .title(title)
-                .writer(writer)
+                .writer(spUser.getName())
                 .content(content)
                 .imagePath(imagePath)
                 .viewCount(viewCount)
@@ -73,6 +75,10 @@ public class Recipe extends BaseTime {
         link.forEach(tmp -> {
             tmp.setRecipe(this);
         });
+    }
+
+    public void addViewCount(){
+        this.viewCount = this.viewCount + 1;
     }
 
     public void updateRecipe(String newTitle, String newContent,
@@ -94,9 +100,5 @@ public class Recipe extends BaseTime {
         });
 
         return commentDtoList;
-    }
-
-    public void updateWriter(String writer){
-        this.writer = writer;
     }
 }

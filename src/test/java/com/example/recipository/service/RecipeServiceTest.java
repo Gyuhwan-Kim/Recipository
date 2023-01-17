@@ -94,9 +94,9 @@ public class RecipeServiceTest {
 
         commentDto.setGroupId(id);
         System.out.println(commentDto);
-        Comment comment = commentDto.toEntity(id, writer);
-
-        commentRepository.save(comment);
+//        Comment comment = commentDto.toEntity(id, writer);
+//
+//        commentRepository.save(comment);
     }
 
     // comment delete test

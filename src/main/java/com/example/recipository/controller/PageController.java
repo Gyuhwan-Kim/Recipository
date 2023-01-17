@@ -84,6 +84,7 @@ public class PageController {
 
     // 게시글 수정 page
     @GetMapping("/user/contents/update-form/{contentId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ModelAndView updateForm(@PathVariable Long contentId){
 
         ModelAndView mView = new ModelAndView();
@@ -108,7 +109,7 @@ public class PageController {
         String writer = spUser.getName();
 
         ModelAndView mView = new ModelAndView();
-        mView.addObject("recipeList", recipeService.getMyRecipeList(writer));
+        mView.addObject("recipeList", recipeService.getMyRecipeList(spUser));
         mView.setViewName("pages/my-page");
 
         return mView;

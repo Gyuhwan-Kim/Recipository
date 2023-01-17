@@ -30,7 +30,7 @@ public class RecipeController {
         System.out.println(recipeDto);
 
         // 게시글을 작성하는 service logic
-        boolean beSaved = recipeService.write(recipeDto, imageFile, writer);
+        boolean beSaved = recipeService.write(recipeDto, imageFile, spUser);
         Map<String, Object> map = new HashMap<>();
         map.put("beSaved", beSaved);
 

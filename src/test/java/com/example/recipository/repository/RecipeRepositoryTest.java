@@ -63,16 +63,16 @@ public class RecipeRepositoryTest {
         recipeDto.setWriter("test11");
         recipeDto.setLink(link);
 
-        Recipe recipe = recipeDto.toEntity();
-
-        recipe.getLink().forEach(tmp -> {
-//            System.out.println(tmp);
-//            tmp.setMenu(menu);
-        });
+//        Recipe recipe = recipeDto.toEntity();
 //
-//        System.out.println(menu);
-
-        recipeRepository.save(recipe);
+//        recipe.getLink().forEach(tmp -> {
+////            System.out.println(tmp);
+////            tmp.setMenu(menu);
+//        });
+////
+////        System.out.println(menu);
+//
+//        recipeRepository.save(recipe);
 
         // Entity Manager 사용 성공
         // 각 액세스마다 생성한다.
@@ -118,17 +118,17 @@ public class RecipeRepositoryTest {
         recipeDto.setWriter("test3");
         recipeDto.setLink(linkList);
 
-        Recipe recipe = recipeDto.toEntity();
+//        Recipe recipe = recipeDto.toEntity();
+//
+//        Recipe dbRecipe = recipeRepository.getRecipeByContentId(recipe.getContentId());
 
-        Recipe dbRecipe = recipeRepository.getRecipeByContentId(recipe.getContentId());
-
-        System.out.println(dbRecipe.toDto());
-        dbRecipe.getLink().forEach(tmp -> {
-           Long id = tmp.getId();
-           int index = dbRecipe.getLink().indexOf(tmp);
-//           menu.getLink().get(index).setId(id);
-//           menu.getLink().get(index).setMenu(menu);
-        });
+//        System.out.println(dbRecipe.toDto());
+//        dbRecipe.getLink().forEach(tmp -> {
+//           Long id = tmp.getId();
+//           int index = dbRecipe.getLink().indexOf(tmp);
+////           menu.getLink().get(index).setId(id);
+////           menu.getLink().get(index).setMenu(menu);
+//        });
 //
 //        menuRepository.save(menu);
 //        linkRepository.saveAll(menu.getLink());

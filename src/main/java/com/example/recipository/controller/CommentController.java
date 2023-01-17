@@ -26,11 +26,9 @@ public class CommentController {
     public ResponseEntity<Object> addComment(CommentDto.CommentRequestDto commentDto,
                                              @AuthenticationPrincipal SpUser spUser){
 
-        // Authentication principal인 UserDetails 에서 사용자 정보를 받아옴
-        String writer = spUser.getName();
-
+        // Authentication principal인 UserDetails 에서 사용자 정보를 받아와서 넘김
         // 댓글을 추가하는 service logic을 통과한 후 ResponseEntity로 return
-        Map<String, Object> map = commentService.addComment(commentDto, writer);
+        Map<String, Object> map = commentService.addComment(commentDto, spUser);
 
         return ResponseEntity.ok().body(map);
     }

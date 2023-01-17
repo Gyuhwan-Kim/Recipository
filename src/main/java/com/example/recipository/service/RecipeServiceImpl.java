@@ -2,6 +2,7 @@ package com.example.recipository.service;
 
 import com.example.recipository.domain.Link;
 import com.example.recipository.domain.Recipe;
+import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
@@ -29,17 +30,21 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipeList() {
+    public List<RecipeDto> getRecipeList() {
+        List<Recipe> recipeList = recipeRepository.findAll();
+        List<RecipeDto> recipeDtoList = new ArrayList<>();
+        recipeList.forEach(tmp -> {
+            recipeDtoList.add(tmp.toDto());
+        });
 
-        return recipeRepository.findAll();
+        return recipeDtoList;
     }
 
     // 게시글을 작성하는 service logic
-    @Transactional
     @Override
     public boolean write(RecipeDto recipeDto,
                          MultipartFile imageFile,
-                         String username) {
+                         SpUser spUser) {
         try {
             if (!imageFile.isEmpty()) {
                 // application.properties 에 작성한 save path
@@ -64,14 +69,12 @@ public class RecipeServiceImpl implements RecipeService {
                 recipeDto.setImagePath(savePath + saveFileName);
             }
 
-            // RecipeDto에 SpUser의 username setting
-            recipeDto.setWriter(username);
             // RecipeDto에 조회수, 좋아요 0으로 setting
             recipeDto.setViewCount(0L);
             recipeDto.setLikeCount(0L);
 
             // RecipeDto를 Entity로 전환하고
-            Recipe recipe = recipeDto.toEntity();
+            Recipe recipe = recipeDto.toEntity(spUser);
             // Entity의 List<Link> 의 각 Link에 Recipe setting
             recipe.setRecipeAtLink();
 
@@ -90,7 +93,6 @@ public class RecipeServiceImpl implements RecipeService {
     public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
         // link repository로부터 data를 가져올 contentId를 담은 dummy entity
         Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
-        RecipeDto recipeDto = recipe.toDto();
 
         List<CommentDto.CommentResponseDto> commentDtoList = recipe.getCommentDtoList();
 
@@ -110,10 +112,9 @@ public class RecipeServiceImpl implements RecipeService {
                     cookie.setValue(cookie.getValue() + "_" + contentId);
                     visitCookie = cookie;
                     // 조회수 1 증가 및 repository save(update)
-                    recipeDto.setViewCount(recipeDto.getViewCount() + 1);
-                    Recipe newRecipe = recipeDto.toEntity();
-                    newRecipe.setRecipeAtLink();
-                    recipeRepository.save(newRecipe);
+                    recipe.addViewCount();
+                    recipe.setRecipeAtLink();
+                    recipeRepository.save(recipe);
                     break;
                 // 확인해서 있으면 그대로 return
                 } else {
@@ -131,11 +132,12 @@ public class RecipeServiceImpl implements RecipeService {
             visitCookie.setMaxAge(60*60*24);
             visitCookie.setSecure(true);
             // 조회수 1 증가 및 repository save(update)
-            recipeDto.setViewCount(recipeDto.getViewCount() + 1);
-            Recipe newRecipe = recipeDto.toEntity();
-            newRecipe.setRecipeAtLink();
-            recipeRepository.save(newRecipe);
+            recipe.addViewCount();
+            recipe.setRecipeAtLink();
+            recipeRepository.save(recipe);
         }
+
+        RecipeDto recipeDto = recipe.toDto();
 
         // Map에 담아 controller로 return
         Map<String, Object> map = new HashMap<>();
@@ -148,7 +150,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public RecipeDto getRecipeOnly(Long contentId) {
-        // link repository로부터 data를 가져올 contentId를 담은 dummy entity
+        // repository로부터 게시글 data를 가져옴
         Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
         RecipeDto recipeDto = recipe.toDto();
 
@@ -227,9 +229,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getMyRecipeList(String writer) {
-        List<Recipe> recipeList = recipeRepository.getAllByWriter(writer);
+    public List<RecipeDto> getMyRecipeList(SpUser spUser) {
+        List<Recipe> recipeList = recipeRepository.getAllBySpUser(spUser);
+        List<RecipeDto> recipeDtoList = new ArrayList<>();
+        recipeList.forEach(tmp -> {
+            recipeDtoList.add(tmp.toDto());
+        });
 
-        return recipeList;
+        return recipeDtoList;
     }
 }
