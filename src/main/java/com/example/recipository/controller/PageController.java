@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.service.RecipeServiceImpl;
 import com.example.recipository.service.UserServiceImpl;
@@ -106,10 +107,10 @@ public class PageController {
     @GetMapping("/user/my-page")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ModelAndView goMyPage(@AuthenticationPrincipal SpUser spUser){
-        String writer = spUser.getName();
-
         ModelAndView mView = new ModelAndView();
-        mView.addObject("recipeList", recipeService.getMyRecipeList(spUser));
+
+        Member member = spUser.toMember();
+        mView.addObject("recipeList", recipeService.getMyRecipeList(member));
         mView.setViewName("pages/my-page");
 
         return mView;

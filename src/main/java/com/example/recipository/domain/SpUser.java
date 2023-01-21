@@ -1,39 +1,26 @@
 package com.example.recipository.domain;
 
 import com.example.recipository.dto.UserDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "sp_user")
 public class SpUser implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String email;
     private String name;
     private String password;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_id"))
     private Set<SpAuthority> authorities;
 
     private boolean enabled;
 
-    @OneToMany(mappedBy = "spUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Recipe> recipeList;
-    @OneToMany(mappedBy = "spUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Recipe> commentList;
 
     @Override
     public String getUsername() {
@@ -55,18 +42,18 @@ public class SpUser implements UserDetails {
         return enabled;
     }
 
-    public UserDto toDto(){
-        return UserDto.builder()
+    public Member toMember(){
+        return Member.builder()
+                .userId(userId)
                 .email(email)
                 .name(name)
+                .password(password)
+                .authorities(authorities)
+                .enabled(enabled)
                 .build();
     }
 
-    public void updateName(UserDto userDto){
-        name = userDto.getName();
-    }
-
-    public void updatePassword(String password){
-        this.password = password;
+    public void updateName(String newName){
+        this.name = newName;
     }
 }

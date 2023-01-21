@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.service.RecipeServiceImpl;
@@ -26,11 +27,10 @@ public class RecipeController {
                                         @AuthenticationPrincipal SpUser spUser){
 
         // 로그인 한 사용자의 username 정보
-        String writer = spUser.getName();
-        System.out.println(recipeDto);
+        Member member = spUser.toMember();
 
         // 게시글을 작성하는 service logic
-        boolean beSaved = recipeService.write(recipeDto, imageFile, spUser);
+        boolean beSaved = recipeService.write(recipeDto, imageFile, member);
         Map<String, Object> map = new HashMap<>();
         map.put("beSaved", beSaved);
 

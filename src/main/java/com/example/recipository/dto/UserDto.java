@@ -1,9 +1,11 @@
 package com.example.recipository.dto;
 
+import com.example.recipository.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -21,4 +23,17 @@ public class UserDto {
             message = "영문과 숫자를 합쳐 8자 이상 20자 이하로 입력해주세요.")
     private String password;
     private String oldPassword;
+
+    public Member toEntity(){
+        // 비밀번호 encoding
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPwd = encoder.encode(password);
+
+        return Member.builder()
+                .email(email)
+                .name(name)
+                .password(encodedPwd)
+                .enabled(true)
+                .build();
+    }
 }

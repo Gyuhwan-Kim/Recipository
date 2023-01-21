@@ -1,6 +1,7 @@
 package com.example.recipository.service;
 
 import com.example.recipository.domain.Link;
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
@@ -25,7 +26,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Value("${file.directory}")
     private String savePath;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
@@ -44,7 +45,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public boolean write(RecipeDto recipeDto,
                          MultipartFile imageFile,
-                         SpUser spUser) {
+                         Member member) {
         try {
             if (!imageFile.isEmpty()) {
                 // application.properties 에 작성한 save path
@@ -74,7 +75,7 @@ public class RecipeServiceImpl implements RecipeService {
             recipeDto.setLikeCount(0L);
 
             // RecipeDto를 Entity로 전환하고
-            Recipe recipe = recipeDto.toEntity(spUser);
+            Recipe recipe = recipeDto.toEntity(member);
             // Entity의 List<Link> 의 각 Link에 Recipe setting
             recipe.setRecipeAtLink();
 
@@ -229,8 +230,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeDto> getMyRecipeList(SpUser spUser) {
-        List<Recipe> recipeList = recipeRepository.getAllBySpUser(spUser);
+    public List<RecipeDto> getMyRecipeList(Member member) {
+        List<Recipe> recipeList = recipeRepository.getAllByMember(member);
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());

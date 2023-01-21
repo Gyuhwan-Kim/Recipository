@@ -26,7 +26,7 @@ public class Recipe extends BaseTime {
     private String title;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private SpUser spUser;
+    private Member member;
     private String content;
     private String imagePath;
     private Long viewCount;
@@ -58,7 +58,7 @@ public class Recipe extends BaseTime {
         return RecipeDto.builder()
                 .contentId(contentId)
                 .title(title)
-                .writer(spUser.getName())
+                .writer(member.getName())
                 .content(content)
                 .imagePath(imagePath)
                 .viewCount(viewCount)

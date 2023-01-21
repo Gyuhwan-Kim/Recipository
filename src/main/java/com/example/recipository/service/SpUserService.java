@@ -1,5 +1,6 @@
 package com.example.recipository.service;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpAuthority;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.repository.UserRepository;
@@ -23,11 +24,15 @@ public class SpUserService implements UserDetailsService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SpUser> spUser = userRepository.findSpUserByEmail(username);
-        Set<SpAuthority>  authorities = spUser.get().getAuthorities();
-        System.out.println(authorities);
+        Optional<Member> member = userRepository.findMemberByEmail(username);
+        if(member.isEmpty()){
+            throw new UsernameNotFoundException(username);
+        }
+        Set<SpAuthority> authorities = member.get().getAuthorities();
+        System.out.println(authorities.size());
 
-        return spUser
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+        SpUser spUser = member.get().toUserDetails();
+
+        return spUser;
     }
 }

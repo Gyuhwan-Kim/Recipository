@@ -1,9 +1,6 @@
 package com.example.recipository.dto;
 
-import com.example.recipository.domain.Comment;
-import com.example.recipository.domain.Link;
-import com.example.recipository.domain.Recipe;
-import com.example.recipository.domain.SpUser;
+import com.example.recipository.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +29,7 @@ public class RecipeDto {
     private String regDate;
     private String modDate;
 
-    public Recipe toEntity(SpUser spUser){
+    public Recipe toEntity(Member member){
         List<Link> linkList = new ArrayList<>();
         if(link != null) {
             link.forEach(tmp -> {
@@ -54,7 +51,7 @@ public class RecipeDto {
         return Recipe.builder()
                 .contentId(contentId)
                 .title(title)
-                .spUser(spUser)
+                .member(member)
                 .content(content)
                 .imagePath(imagePath)
                 .viewCount(viewCount)

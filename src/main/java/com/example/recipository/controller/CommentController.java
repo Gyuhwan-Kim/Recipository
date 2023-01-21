@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.CommentRequestDto;
@@ -28,7 +29,8 @@ public class CommentController {
 
         // Authentication principal인 UserDetails 에서 사용자 정보를 받아와서 넘김
         // 댓글을 추가하는 service logic을 통과한 후 ResponseEntity로 return
-        Map<String, Object> map = commentService.addComment(commentDto, spUser);
+        Member member = spUser.toMember();
+        Map<String, Object> map = commentService.addComment(commentDto, member);
 
         return ResponseEntity.ok().body(map);
     }

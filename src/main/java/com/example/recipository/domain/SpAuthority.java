@@ -17,7 +17,8 @@ import javax.persistence.*;
 @IdClass(SpAuthority.class)
 public class SpAuthority implements GrantedAuthority {
     @Id
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Member member;
     private String authority;
 }

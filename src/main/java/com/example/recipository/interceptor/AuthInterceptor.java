@@ -49,13 +49,13 @@ public class AuthInterceptor implements HandlerInterceptor {
             // DB의 data와 비교해서 아닌 경우 banned page로 이동하게 하고 false를 return
             // 같은 경우는 true를 return하고 정상적으로 동작이 수행되도록 함
             Recipe recipe = recipeRepository.getRecipeByContentId(id);
-            beMatched = spUser.getUsername().equals(recipe.getSpUser().getEmail());
+            beMatched = spUser.getUsername().equals(recipe.getMember().getEmail());
 
         } else if(pathVariables.containsKey("commentId")){
             id = Long.parseLong((String)pathVariables.get("commentId"));
 
             Comment comment = commentRepository.getCommentByCommentId(id);
-            beMatched = spUser.getUsername().equals(comment.getSpUser().getEmail());
+            beMatched = spUser.getUsername().equals(comment.getMember().getEmail());
         }
 
         if(!beMatched){

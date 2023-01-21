@@ -1,6 +1,7 @@
 package com.example.recipository.service;
 
 import com.example.recipository.domain.Comment;
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.repository.CommentRepository;
@@ -20,7 +21,7 @@ public class CommentServiceImpl implements CommentService{
 
     // 댓글을 추가하는 service logic
     @Override
-    public Map<String, Object> addComment(CommentDto.CommentRequestDto commentDto, SpUser spUser) {
+    public Map<String, Object> addComment(CommentDto.CommentRequestDto commentDto, Member member) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             Long id = commentRepository.getSequenceValue();
@@ -31,7 +32,7 @@ public class CommentServiceImpl implements CommentService{
             if (commentDto.getGroupId() == null) {
                 commentDto.setGroupId(id);
             }
-            Comment comment = commentDto.toEntity(id, spUser);
+            Comment comment = commentDto.toEntity(id, member);
 
             // Comment entity에 담긴 data를 repository에 save하고
             commentRepository.save(comment);

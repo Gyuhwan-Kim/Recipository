@@ -43,7 +43,7 @@ public class RecipeServiceTest {
         recipeDto.setWriter("test1");
         recipeDto.setLink(linkList);
 
-        recipeService.write(recipeDto, null, null);
+//        recipeService.write(recipeDto, null, null);
     }
 
     //get

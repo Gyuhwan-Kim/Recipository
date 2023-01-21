@@ -1,7 +1,6 @@
 package com.example.recipository.service;
 
-import com.example.recipository.domain.Comment;
-import com.example.recipository.domain.Recipe;
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpAuthority;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.UserDto;
@@ -9,15 +8,12 @@ import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.RecipeRepository;
 import com.example.recipository.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,42 +43,38 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean signin(UserDto userDto) {
-        // 비밀번호 encoding
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPwd = encoder.encode(userDto.getPassword());
+        try{
+            // 비밀번호 encoding
+            Member member = userDto.toEntity();
 
-        SpUser user = new SpUser();
-        user.setEmail(userDto.getEmail());
-        user.setName(userDto.getName());
-        user.setPassword(encodedPwd);
-        user.setEnabled(true);
+            member.addAuthority();
+            userRepository.save(member);
 
-        if(userRepository.save(user) != null){
-            addAuthority(user.getUserId(), "ROLE_USER");
             return true;
+        } catch (Exception e){
+            return false;
         }
-        return false;
     }
 
-    @Transactional
-    // 권한을 추가하는 method
-    public void addAuthority(Long userId, String authority){
-        userRepository.findById(userId).ifPresent(user -> {
-            SpAuthority spAuthority = new SpAuthority(user.getUserId(), authority);
-            if(user.getAuthorities() == null){
-                HashSet<SpAuthority> authorities = new HashSet<>();
-                authorities.add(spAuthority);
-                user.setAuthorities(authorities);
-                userRepository.save(user);
-            } else if(!user.getAuthorities().contains(spAuthority)){
-                HashSet<SpAuthority> authorities = new HashSet<>();
-                authorities.addAll(user.getAuthorities());
-                authorities.add(spAuthority);
-                user.setAuthorities(authorities);
-                userRepository.save(user);
-            }
-        });
-    }
+//    @Transactional
+//    // 권한을 추가하는 method
+//    public void addAuthority(Long userId, String authority){
+//        userRepository.findById(userId).ifPresent(user -> {
+//            SpAuthority spAuthority = new SpAuthority(user.getUserId(), authority);
+//            if(user.getAuthorities() == null){
+//                HashSet<SpAuthority> authorities = new HashSet<>();
+//                authorities.add(spAuthority);
+//                user.setAuthorities(authorities);
+//                userRepository.save(user);
+//            } else if(!user.getAuthorities().contains(spAuthority)){
+//                HashSet<SpAuthority> authorities = new HashSet<>();
+//                authorities.addAll(user.getAuthorities());
+//                authorities.add(spAuthority);
+//                user.setAuthorities(authorities);
+//                userRepository.save(user);
+//            }
+//        });
+//    }
 
 //    @Override
 //    public boolean login(User user) {
@@ -104,7 +96,7 @@ public class UserServiceImpl implements UserService {
     // 유저의 정보를 가져오는 method
     @Override
     public UserDto getProfile(String email) {
-        SpUser user = userRepository.getSpUserByEmail(email);
+        Member user = userRepository.getMemberByEmail(email);
 
         return user.toDto();
     }
@@ -115,7 +107,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateProfile(UserDto userDto) {
         try {
             // Authentication Principal의 email data를 기반으로 DB에서 사용자 정보를 가져옴
-            SpUser user = userRepository.getSpUserByEmail(userDto.getEmail());
+            Member user = userRepository.getMemberByEmail(userDto.getEmail());
 
 //            // 게시글 writer 변경
 //            // 작성자 정보로 작성한 게시글 정보를 가져와서
@@ -152,7 +144,7 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(UserDto userDto) {
         try {
             // Authentication Principal의 email data를 기반으로 DB에서 사용자 정보를 가져옴
-            SpUser user = userRepository.getSpUserByEmail(userDto.getEmail());
+            Member user = userRepository.getMemberByEmail(userDto.getEmail());
             String dbPassword = user.getPassword();
             String oldPassword = userDto.getOldPassword();
             // DB data와 입력한 data의 일치 여부에 따라

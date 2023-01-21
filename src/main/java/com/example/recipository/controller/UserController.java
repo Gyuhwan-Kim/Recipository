@@ -110,7 +110,7 @@ public class UserController {
         boolean beUpdated = userService.updateProfile(userDto);
         // 성공 시 Authentication Principal 의 nickname data를 수정해주고
         if(beUpdated){
-            spUser.setName(userDto.getName());
+            spUser.updateName(userDto.getName());
         }
 
         // 성공 여부 return

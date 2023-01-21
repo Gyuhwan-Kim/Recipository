@@ -21,7 +21,7 @@ public class Comment extends BaseTime {
     private Long commentId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private SpUser spUser;
+    private Member member;
     private String comment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_id")
@@ -42,7 +42,7 @@ public class Comment extends BaseTime {
 
         return CommentDto.CommentResponseDto.builder()
                 .commentId(this.commentId)
-                .writer(this.spUser.getName())
+                .writer(this.member.getName())
                 .comment(comment)
                 .groupId(this.groupId)
                 .regDate(super.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
