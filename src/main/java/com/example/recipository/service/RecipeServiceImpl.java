@@ -1,33 +1,29 @@
 package com.example.recipository.service;
 
-import com.example.recipository.domain.Link;
-import com.example.recipository.domain.Member;
-import com.example.recipository.domain.Recipe;
-import com.example.recipository.domain.SpUser;
+import com.example.recipository.domain.*;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
-import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
+    private final CommentRepository commentRepository;
 
     @Value("${file.directory}")
     private String savePath;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, CommentRepository commentRepository) {
         this.recipeRepository = recipeRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -92,10 +88,15 @@ public class RecipeServiceImpl implements RecipeService {
     // 게시글의 data를 가져오는 service logic
     @Override
     public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
-        // link repository로부터 data를 가져올 contentId를 담은 dummy entity
+        // 게시글 data를 가져옴
         Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
 
-        List<CommentDto.CommentResponseDto> commentDtoList = recipe.getCommentDtoList();
+        // 게시글에 대한 댓글 data를 가져옴
+        List<CommentDto.CommentResponseDto> commentDtoList = new ArrayList<>();
+        List<Comment> commentList = commentRepository.getCommentByRecipe(recipe);
+        commentList.forEach(tmp -> {
+            commentDtoList.add(tmp.toDto());
+        });
 
         // Cookie의 조회수 중복 방지를 위한 작업
         // return을 위한 Cookie variable
@@ -232,10 +233,12 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeDto> getMyRecipeList(Member member) {
         List<Recipe> recipeList = recipeRepository.getAllByMember(member);
+        System.out.println("=============================================");
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());
         });
+        System.out.println("=============================================");
 
         return recipeDtoList;
     }

@@ -92,13 +92,4 @@ public class Recipe extends BaseTime {
         this.bePublic = newBePublic;
         this.link = newLink;
     }
-
-    public List<CommentDto.CommentResponseDto> getCommentDtoList(){
-        List<CommentDto.CommentResponseDto> commentDtoList = new ArrayList<>();
-        this.commentList.forEach(tmp -> {
-            commentDtoList.add(tmp.toDto());
-        });
-
-        return commentDtoList;
-    }
 }
