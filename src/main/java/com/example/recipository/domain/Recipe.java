@@ -48,6 +48,14 @@ public class Recipe extends BaseTime {
     }
 
     public RecipeDto toDto(){
+        return RecipeDto.builder()
+                .contentId(contentId)
+                .title(title)
+                .writer(member.getName())
+                .build();
+    }
+
+    public RecipeDto toDtoWithAll(){
         List<String> linkList = new ArrayList<String>();
         if(link != null){
             link.forEach(tmp -> {

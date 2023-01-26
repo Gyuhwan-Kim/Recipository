@@ -28,7 +28,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public List<RecipeDto> getRecipeList() {
-        List<Recipe> recipeList = recipeRepository.findAll();
+        List<Recipe> recipeList = recipeRepository.getAllRecipe();
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());
@@ -139,7 +139,7 @@ public class RecipeServiceImpl implements RecipeService {
             recipeRepository.save(recipe);
         }
 
-        RecipeDto recipeDto = recipe.toDto();
+        RecipeDto recipeDto = recipe.toDtoWithAll();
 
         // Map에 담아 controller로 return
         Map<String, Object> map = new HashMap<>();
@@ -154,7 +154,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeDto getRecipeOnly(Long contentId) {
         // repository로부터 게시글 data를 가져옴
         Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
-        RecipeDto recipeDto = recipe.toDto();
+        RecipeDto recipeDto = recipe.toDtoWithAll();
 
         return recipeDto;
     }
@@ -233,12 +233,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeDto> getMyRecipeList(Member member) {
         List<Recipe> recipeList = recipeRepository.getAllByMember(member);
-        System.out.println("=============================================");
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());
         });
-        System.out.println("=============================================");
 
         return recipeDtoList;
     }

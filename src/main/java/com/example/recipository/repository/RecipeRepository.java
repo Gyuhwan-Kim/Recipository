@@ -10,6 +10,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+    @Query("select r from Recipe r join fetch r.member")
+    List<Recipe> getAllRecipe();
+
     @Query("select r from Recipe r join fetch r.member where r.contentId = :id")
     Recipe getRecipeByContentId(@Param("id") Long contentId);
 
