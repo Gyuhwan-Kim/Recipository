@@ -7,6 +7,7 @@ import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
@@ -38,6 +39,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     // 게시글을 작성하는 service logic
+    @Transactional
     @Override
     public boolean write(RecipeDto recipeDto,
                          MultipartFile imageFile,
@@ -86,6 +88,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     // 게시글의 data를 가져오는 service logic
+    @Transactional
     @Override
     public Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList) {
         // 게시글 data를 가져옴
@@ -160,6 +163,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     // 게시글을 수정하는 service logic
+    @Transactional
     @Override
     public boolean update(Long contentId, RecipeDto recipeDto, MultipartFile imageFile) {
         try {
@@ -219,10 +223,23 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     // 게시글을 삭제하는 service logic
+    @Transactional
     @Override
     public boolean delete(Long contentId) {
         try{
             recipeRepository.deleteById(contentId);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteList(List<Long> ids) {
+        try {
+            recipeRepository.deleteAllById(ids);
 
             return true;
         } catch (Exception e) {

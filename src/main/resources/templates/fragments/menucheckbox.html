@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div class="menucheckbox" th:fragment="menucheckbox">
+    <form action="/user/contents" id="contentsDeleteForm">
+        <div class="row">
+            <h2 class="col">내 글 삭제하기</h2>
+            <button id="contentsDeleteBtn" class="btn btn-light float-end col-1">삭제</button>
+        </div>
+        <ul>
+            <li class="menubox" th:each="list : ${recipeList}">
+                <div class="stackBox">
+                    <img src="/lib/image/emptydummy.png" alt="" class="deleteBox" style="width:200px;">
+                    <input type="checkbox" class="deleteCheckBox"
+                           name="ids" th:value="${list.contentId}"
+                           style="width:200px; height: 200px;">
+                </div>
+                <h4 th:text="${list.title}">메뉴 이름</h4>
+                <h4 th:text="${list.writer}"></h4>
+            </li>
+        </ul>
+    </form>
+</div>
+</html>

@@ -12,3 +12,14 @@
     #submitBtn, #profileFormBtn, #pwdFormBtn{
         margin: 12px;
     }
+    .stackBox{
+        position: relative;
+    }
+    .deleteBox{
+        position: absolute;
+        z-index: -1;
+    }
+    .deleteCheckBox{
+        opacity: 0.5;
+        z-index: 0;
+    }

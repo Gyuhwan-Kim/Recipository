@@ -13,11 +13,32 @@
             console.log(newDiv);
             document.querySelector(".templateDiv").replaceWith(newDiv);
 
-            addBtnEvent();
+            addProfileBtnEvent();
         });
     });
 
-    function addBtnEvent(){
+    document.querySelector("#deleteBtn").addEventListener("click", function(e){
+        var url = "/user/delete-form";
+
+        var promise = fetch(url);
+
+        promise.then(function(response){
+            return response.text();
+        }).then(function(data){
+            var dom = new DOMParser();
+            dom = dom.parseFromString(data, "text/html");
+            console.log(dom);
+            var newDiv = dom.getElementsByClassName("templateDiv")[0];
+            console.log(newDiv);
+            document.querySelector(".templateDiv").replaceWith(newDiv);
+
+            addContentsDeleteBtnEvent();
+        });
+    });
+
+    // Profile 버튼 event 추가 function
+    function addProfileBtnEvent(){
+        // Profile 변경 template loading
         document.querySelector("#profileFormBtn").addEventListener("click", function(e){
             var url = "/user/profile-form";
 
@@ -35,6 +56,7 @@
             });
         });
 
+        // Password 변경 template loading
         document.querySelector("#pwdFormBtn").addEventListener("click", function(e){
             var url = "/user/password-form";
 
@@ -56,6 +78,7 @@
     var nameValidation = true;
     var pwdValidation = false;
 
+    // Profile 변경 event 추가 function
     function addProfileEvent(){
         // name constraint
         document.querySelector("#name").addEventListener("input", function(){
@@ -143,6 +166,7 @@
         });
     }
 
+    // Password 변경 event 추가 function
     function addPwdEvent(){
         // password constraint
         document.querySelector("#password").addEventListener("input", function(){
@@ -248,4 +272,41 @@
             document.querySelector("#pwdCheckMsg").innerText = "비밀번호가 일치합니다.";
             pwdValidation = true;
         }
+    }
+
+    // 게시글 일괄 삭제 event 추가 function
+    function addContentsDeleteBtnEvent(){
+        document.querySelector("#contentsDeleteForm").addEventListener("submit", function(e){
+            e.preventDefault();
+
+            var deletion = confirm("선택한 게시글들을 삭제하시겠습니까?");
+            if(deletion){
+                var url = this.action;
+                var formData = new FormData(this);
+
+                var token = document.querySelector("meta[name=_csrf]").content;
+                var header = document.querySelector("meta[name=_csrf_header]").content;
+
+                var promise = fetch(url, {
+                    method: "DELETE",
+                    headers: {
+                        "header": header,
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-Token": token
+                    },
+                    body: formData
+                });
+
+                promise.then(function(response){
+                    return response.json();
+                }).then(function(data){
+                    if(data.beDeleted){
+                        alert("게시글을 삭제했습니다.");
+                        location.href = "/user/my-page";
+                    } else {
+                        alert("게시글을 삭제하지 못했습니다. 문제가 반복된다면 문의 바랍니다.");
+                    }
+                });
+            }
+        });
     }

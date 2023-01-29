@@ -144,4 +144,15 @@ public class PageController {
 
         return "fragments/profile-forms :: pwdForm";
     }
+
+    @GetMapping("/user/delete-form")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String goDeleteForm(Model model,
+                               @AuthenticationPrincipal SpUser spUser){
+
+        Member member = spUser.toMember();
+        model.addAttribute("recipeList", recipeService.getMyRecipeList(member));
+
+        return "fragments/delete-form :: deleteForm";
+    }
 }

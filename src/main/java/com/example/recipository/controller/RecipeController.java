@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -55,6 +56,15 @@ public class RecipeController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("beDeleted", recipeService.delete(contentId));
+
+        return ResponseEntity.ok().body(map);
+    }
+
+    @DeleteMapping("/user/contents")
+    public ResponseEntity<Object> deleteContents(@RequestParam List<Long> ids){
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("beDeleted", recipeService.deleteList(ids));
 
         return ResponseEntity.ok().body(map);
     }

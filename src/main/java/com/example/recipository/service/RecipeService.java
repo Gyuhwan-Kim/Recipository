@@ -19,5 +19,7 @@ public interface RecipeService {
 
     boolean delete(Long contentId);
 
+    boolean deleteList(List<Long> ids);
+
     List<RecipeDto> getMyRecipeList(Member member);
 }
