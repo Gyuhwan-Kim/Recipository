@@ -1,5 +1,6 @@
 package com.example.recipository.service;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.dto.UserDto;
 
 public interface UserService {
@@ -9,4 +10,5 @@ public interface UserService {
     UserDto getProfile(String email);
     boolean updateProfile(UserDto userDto);
     boolean updatePassword(UserDto userDto);
+    boolean exit(Member member);
 }

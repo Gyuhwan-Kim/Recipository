@@ -31,8 +31,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Recipe> recipeList;
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Recipe> commentList;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Comment> commentList;
 
     public UserDto toDto(){
         return UserDto.builder()

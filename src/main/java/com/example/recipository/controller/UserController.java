@@ -1,5 +1,6 @@
 package com.example.recipository.controller;
 
+import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.UserDto;
 import com.example.recipository.service.UserService;
@@ -162,5 +163,24 @@ public class UserController {
         map.put("beUpdated", beUpdated);
 
         return ResponseEntity.ok(map);
+    }
+
+    // 회원 탈퇴
+    @DeleteMapping("/user/exit")
+    public ResponseEntity<Object> deleteUser(@AuthenticationPrincipal SpUser spUser){
+
+        Member member = spUser.toMember();
+
+        Map<String, Object> map = new HashMap<>();
+
+        boolean beDeleted = userService.exit(member);
+        // 성공 시 Authentication 을 authenticated false로 하여 로그아웃 처리
+        if(beDeleted){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            authentication.setAuthenticated(false);
+        }
+        map.put("beDeleted", beDeleted);
+
+        return ResponseEntity.ok().body(map);
     }
 }

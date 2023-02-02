@@ -1,8 +1,6 @@
 package com.example.recipository.service;
 
-import com.example.recipository.domain.Member;
-import com.example.recipository.domain.SpAuthority;
-import com.example.recipository.domain.SpUser;
+import com.example.recipository.domain.*;
 import com.example.recipository.dto.UserDto;
 import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.RecipeRepository;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -165,6 +164,28 @@ public class UserServiceImpl implements UserService {
             } else {
                 return false;
             }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 회원 탈퇴 service logic
+    @Transactional
+    @Override
+    public boolean exit(Member member) {
+        try {
+            // 온전한 Member (Recipe List, Comment List 보유)
+            member = userRepository.getMemberByEmail(member.getEmail());
+            // table에 임의로 만들어 둔 0번 사용자의 정보. 탈퇴한 회원임을 name으로 한다.
+            Member deleteMember = userRepository.getReferenceById(0L);
+
+            // 댓글의 작성자를 변경
+            commentRepository.updateAllByMember(member, deleteMember);
+
+            // 사용자의 정보 삭제 (작성한 게시글과 댓글 삭제)
+            userRepository.delete(member);
+
+            return true;
         } catch (Exception e) {
             return false;
         }

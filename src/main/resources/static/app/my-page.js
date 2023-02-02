@@ -36,6 +36,38 @@
         });
     });
 
+    document.querySelector("#exitBtn").addEventListener("click", function(e){
+        var exit = confirm("관련된 모든 정보가 삭제됩니다. 정말 회원 탈퇴를 진행하시겠습니까? ");
+
+        if(exit){
+            var url = "/user/exit";
+
+            var token = document.querySelector("meta[name=_csrf]").content;
+            var header = document.querySelector("meta[name=_csrf_header]").content;
+
+            var promise = fetch(url, {
+                method: "DELETE",
+                headers: {
+                    "header": header,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": token
+                }
+            });
+
+            promise.then(function(response){
+                return response.json();
+            }).then(function(data){
+                if(data.beDeleted){
+                    window.location = "/";
+                    alert("회원 탈퇴가 완료되었습니다. 그동안 이용해주셔서 감사합니다.");
+                    window.location = "/";
+                } else {
+                    alert("회원 탈퇴가 정상적으로 이루어지지 않았습니다. 문제가 반복된다면 문의 바랍니다.");
+                }
+            });
+        }
+    });
+
     // Profile 버튼 event 추가 function
     function addProfileBtnEvent(){
         // Profile 변경 template loading
