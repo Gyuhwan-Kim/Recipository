@@ -29,7 +29,7 @@ public class Member {
 
     private boolean enabled;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Recipe> recipeList;
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Comment> commentList;

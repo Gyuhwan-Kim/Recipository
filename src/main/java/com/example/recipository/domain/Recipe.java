@@ -32,11 +32,11 @@ public class Recipe extends BaseTime {
     private Long viewCount;
     private Long likeCount;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Link> link;
     private String category;
     private boolean bePublic;
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     @OrderBy("groupId asc, commentId asc")
     private List<Comment> commentList;
     @Column(nullable = false)

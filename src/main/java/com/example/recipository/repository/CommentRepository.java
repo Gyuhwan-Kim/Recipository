@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
@@ -23,6 +24,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> getCommentByRecipe(@Param("recipe") Recipe recipe);
 
     @Modifying
-    @Query("update Comment c set c.beDeleted = true, c.member = :newId where c.member = :id")
-    int updateAllByMember(@Param("id") Member member, @Param("newId") Member deleteMember);
+    @Query("update Comment c " +
+            "set c.beDeleted = true, c.member = :newId " +
+            "where c.member = :id and c.recipe not in :recipes")
+    int updateAllByMember(@Param("id") Member member, @Param("newId") Member deleteMember,
+                          @Param("recipes") Collection<Recipe> recipeList);
+
+    @Modifying
+    @Query("delete from Comment c where c.recipe in :recipes")
+    int deleteAllByRecipes(@Param("recipes") Collection<Recipe> recipeList);
 }

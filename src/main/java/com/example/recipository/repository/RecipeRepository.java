@@ -4,6 +4,7 @@ import com.example.recipository.domain.Member;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.SpUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,6 +23,11 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 //    @Query("select r from Recipe r join r.member m where m.userId = :id")
 //    List<Recipe> getAllByUserId(@Param("id") Long id);
 
+    @Modifying(clearAutomatically = true)
     @Query("select r from Recipe r join fetch r.member m where m = :user")
     List<Recipe> getAllByMember(@Param("user") Member member);
+
+    @Modifying
+    @Query("delete from Recipe r where r.member = :user")
+    int deleteAllByMember(@Param("user") Member member);
 }

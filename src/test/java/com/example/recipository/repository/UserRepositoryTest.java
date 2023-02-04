@@ -19,6 +19,10 @@ public class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    RecipeRepository recipeRepository;
+    @Autowired
+    LinkRepository linkRepository;
+    @Autowired
     CommentRepository commentRepository;
 
     @Test
@@ -50,12 +54,15 @@ public class UserRepositoryTest {
     public void test2(){
         Member member = userRepository.getMemberByEmail("test3@test.com");
         List<Recipe> recipeList = member.getRecipeList();
-        recipeList.clear();
 
         Member member2 = userRepository.getReferenceById(0L);
 
-        int result = commentRepository.updateAllByMember(member, member2);
+        int result = commentRepository.updateAllByMember(member, member2, recipeList);
         System.out.println(result);
+
+        commentRepository.deleteAllByRecipes(recipeList);
+        linkRepository.deleteAllByRecipes(recipeList);
+        recipeRepository.deleteAllByMember(member);
 
         userRepository.delete(member);
 

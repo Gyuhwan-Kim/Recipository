@@ -3,26 +3,28 @@ package com.example.recipository.service;
 import com.example.recipository.domain.*;
 import com.example.recipository.dto.UserDto;
 import com.example.recipository.repository.CommentRepository;
+import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
 import com.example.recipository.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    UserRepository userRepository;
+
+    private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
+    private final LinkRepository linkRepository;
     private final CommentRepository commentRepository;
 
-    public UserServiceImpl(RecipeRepository recipeRepository, CommentRepository commentRepository) {
+    public UserServiceImpl(UserRepository userRepository, RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository) {
+        this.userRepository = userRepository;
         this.recipeRepository = recipeRepository;
+        this.linkRepository = linkRepository;
         this.commentRepository = commentRepository;
     }
 
@@ -179,8 +181,17 @@ public class UserServiceImpl implements UserService {
             // table에 임의로 만들어 둔 0번 사용자의 정보. 탈퇴한 회원임을 name으로 한다.
             Member deleteMember = userRepository.getReferenceById(0L);
 
-            // 댓글의 작성자를 변경
-            commentRepository.updateAllByMember(member, deleteMember);
+            // 삭제하고자 하는 게시글 목록
+            List<Recipe> recipeList = recipeRepository.getAllByMember(member);
+
+            // 타 게시글에 있는 사용자의 댓글 작성자를 0번으로 변경
+            commentRepository.updateAllByMember(member, deleteMember, recipeList);
+            // 사용자가 작성한 게시글 하위에 있는 모든 댓글 삭제
+            commentRepository.deleteAllByRecipes(recipeList);
+            // 사용자가 작성한 게시글의 참조 링크 삭제
+            linkRepository.deleteAllByRecipes(recipeList);
+            // 사용자가 작성한 게시글 삭제
+            recipeRepository.deleteAllByMember(member);
 
             // 사용자의 정보 삭제 (작성한 게시글과 댓글 삭제)
             userRepository.delete(member);
