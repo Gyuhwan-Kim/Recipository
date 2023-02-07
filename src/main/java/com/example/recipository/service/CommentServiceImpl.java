@@ -6,6 +6,7 @@ import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.repository.CommentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     // 댓글을 추가하는 service logic
+    @Transactional
     @Override
     public Map<String, Object> addComment(CommentDto.CommentRequestDto commentDto, Member member) {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -51,6 +53,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     // 댓글 삭제 (사실상 수정)
+    @Transactional
     @Override
     public boolean delComment(Long commentId) {
         try{

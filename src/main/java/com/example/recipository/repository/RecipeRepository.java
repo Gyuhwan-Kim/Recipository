@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
@@ -16,6 +17,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("select r from Recipe r join fetch r.member where r.contentId = :id")
     Recipe getRecipeByContentId(@Param("id") Long contentId);
+
+    @Query("select r from Recipe r where r.contentId in :ids")
+    List<Recipe> getRecipeByContentIds(@Param("ids") Collection<Long> ids);
 
 //    @Query(value = "select * from recipe r join member m on r.user_id = m.user_id where r.user_id = :userId",
 //            nativeQuery = true)
@@ -30,4 +34,16 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Modifying
     @Query("delete from Recipe r where r.member = :user")
     int deleteAllByMember(@Param("user") Member member);
+
+//    @Modifying
+//    @Query(value = "delete from recipe r where r.content_id in :ids", nativeQuery = true)
+//    void deleteAllByIds(@Param("ids") Collection<Long> ids);
+
+    @Modifying
+    @Query("delete from Recipe r where r.contentId in :ids")
+    int deleteAllByIds(@Param("ids") Collection<Long> ids);
+
+    @Modifying
+    @Query("delete from Recipe r where r.contentId = :id")
+    int deleteRecipeById(@Param("id") Long ids);
 }

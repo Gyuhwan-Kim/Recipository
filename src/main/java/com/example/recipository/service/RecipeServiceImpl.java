@@ -4,6 +4,7 @@ import com.example.recipository.domain.*;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.RecipeDto;
 import com.example.recipository.repository.CommentRepository;
+import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,15 @@ import java.util.*;
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
+    private final LinkRepository linkRepository;
     private final CommentRepository commentRepository;
 
     @Value("${file.directory}")
     private String savePath;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, CommentRepository commentRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository) {
         this.recipeRepository = recipeRepository;
+        this.linkRepository = linkRepository;
         this.commentRepository = commentRepository;
     }
 
@@ -227,7 +230,11 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public boolean delete(Long contentId) {
         try{
-            recipeRepository.deleteById(contentId);
+            Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
+
+            commentRepository.deleteAllByRecipe(recipe);
+            linkRepository.deleteAllByRecipe(recipe);
+            recipeRepository.deleteRecipeById(contentId);
 
             return true;
         } catch (Exception e) {
@@ -239,7 +246,11 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public boolean deleteList(List<Long> ids) {
         try {
-            recipeRepository.deleteAllById(ids);
+            List<Recipe> recipeList = recipeRepository.getRecipeByContentIds(ids);
+
+            commentRepository.deleteAllByRecipes(recipeList);
+            linkRepository.deleteAllByRecipes(recipeList);
+            recipeRepository.deleteAllByIds(ids);
 
             return true;
         } catch (Exception e) {

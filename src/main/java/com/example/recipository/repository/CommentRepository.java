@@ -30,7 +30,15 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     int updateAllByMember(@Param("id") Member member, @Param("newId") Member deleteMember,
                           @Param("recipes") Collection<Recipe> recipeList);
 
+//    @Modifying
+//    @Query(value = "delete from comment c where c.target_id in :ids", nativeQuery = true)
+//    void deleteAllByRecipes2(@Param("ids") Collection<Long> ids);
+
     @Modifying
     @Query("delete from Comment c where c.recipe in :recipes")
     int deleteAllByRecipes(@Param("recipes") Collection<Recipe> recipeList);
+
+    @Modifying
+    @Query("delete from Comment c where c.recipe = :recipe")
+    int deleteAllByRecipe(@Param("recipe") Recipe recipe);
 }
