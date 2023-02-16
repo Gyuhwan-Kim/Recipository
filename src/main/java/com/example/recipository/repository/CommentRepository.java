@@ -18,7 +18,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByRecipeOrderByGroupIdAscCommentIdAsc(Recipe recipe);
 
-    Comment getCommentByCommentId(Long commentId);
+    @Query(value = "select name from comment c " +
+            "join member m on c.user_id = m.user_id " +
+            "where c.comment_id = :id", nativeQuery = true)
+    String getWriterForComment(@Param("id") Long commentId);
 
     @Query("select c from Comment c join fetch c.member where c.recipe = :recipe")
     List<Comment> getCommentByRecipe(@Param("recipe") Recipe recipe);

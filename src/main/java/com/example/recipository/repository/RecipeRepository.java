@@ -15,6 +15,11 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r join fetch r.member")
     List<Recipe> getAllRecipe();
 
+    @Query(value = "select name from recipe r " +
+            "join member m on r.user_id = m.user_id " +
+            "where r.content_id = :id", nativeQuery = true)
+    String getWriterForRecipe(@Param("id") Long contentId);
+
     @Query("select r from Recipe r join fetch r.member where r.contentId = :id")
     Recipe getRecipeByContentId(@Param("id") Long contentId);
 
@@ -27,7 +32,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 //    @Query("select r from Recipe r join r.member m where m.userId = :id")
 //    List<Recipe> getAllByUserId(@Param("id") Long id);
 
-    @Modifying(clearAutomatically = true)
     @Query("select r from Recipe r join fetch r.member m where m = :user")
     List<Recipe> getAllByMember(@Param("user") Member member);
 
