@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -31,8 +32,27 @@ public class PageController {
     @GetMapping(value = {"/"})
     public ModelAndView main(){
         ModelAndView mView = new ModelAndView();
-        mView.addObject("recipeList", recipeService.getRecipeList());
+
+        Map<String, Object> map = recipeService.getRecipeList(1);
+
+        mView.addObject("recipeList", map.get("recipeDtoList"));
+        mView.addObject("pagination", map.get("pageDto"));
         mView.setViewName("index");
+
+        return mView;
+    }
+
+    // paging 처리
+    @GetMapping("/page/{pageNum}")
+    public ModelAndView mainWithPaging(@PathVariable("pageNum") int pageNum){
+        ModelAndView mView = new ModelAndView();
+
+        Map<String, Object> map = recipeService.getRecipeList(pageNum);
+
+        mView.addObject("recipeList", map.get("recipeDtoList"));
+        mView.addObject("pagination", map.get("pageDto"));
+        mView.setViewName("index");
+
         return mView;
     }
 

@@ -3,6 +3,8 @@ package com.example.recipository.repository;
 import com.example.recipository.domain.Member;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.SpUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +16,10 @@ import java.util.List;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r join fetch r.member")
     List<Recipe> getAllRecipe();
+
+    @Query(value = "select r from Recipe r join fetch r.member",
+            countQuery = "select count(r) from Recipe r")
+    Page<Recipe> getAllWithPagination(Pageable pageable);
 
     @Query(value = "select name from recipe r " +
             "join member m on r.user_id = m.user_id " +

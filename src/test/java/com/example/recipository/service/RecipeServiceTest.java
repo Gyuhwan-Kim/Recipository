@@ -12,6 +12,8 @@ import com.example.recipository.repository.RecipeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,5 +204,29 @@ public class RecipeServiceTest {
         if(dbLength > newLength){
             recipe.getLink().subList(newLength, dbLength).clear();
         }
+    }
+
+    @Test
+    @Transactional
+    public void test8(){
+        int pageNum = 6;
+
+        int pageIndex = pageNum - 1;
+        int groupSize = 2;
+        int pageCounts = 2;
+
+        PageRequest pageable = PageRequest.of(pageIndex, groupSize);
+
+        Page<Recipe> recipeList = recipeRepository.findAll(pageable);
+        List<RecipeDto> recipeDtoList = new ArrayList<>();
+        recipeList.forEach(tmp -> {
+            System.out.println(tmp.toDto());
+            recipeDtoList.add(tmp.toDto());
+        });
+
+        int startPageNum = ((pageNum - 1) / pageCounts) * pageCounts + 1;
+        int endPageNum = 0;
+
+        System.out.println("startPageNum: " + startPageNum);
     }
 }

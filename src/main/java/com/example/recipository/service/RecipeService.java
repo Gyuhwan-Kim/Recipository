@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface RecipeService {
-    List<RecipeDto> getRecipeList();
+    Map<String, Object> getRecipeList(int pageNum);
     boolean write(RecipeDto recipeDto, MultipartFile multipartFile, Member member);
     Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList);
     RecipeDto getRecipeOnly(Long contentId);

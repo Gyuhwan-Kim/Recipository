@@ -23,7 +23,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "where c.comment_id = :id", nativeQuery = true)
     String getWriterForComment(@Param("id") Long commentId);
 
-    @Query("select c from Comment c join fetch c.member where c.recipe = :recipe")
+    @Query("select c from Comment c join fetch c.member where c.recipe = :recipe " +
+            "order by c.groupId asc, c.commentId asc")
     List<Comment> getCommentByRecipe(@Param("recipe") Recipe recipe);
 
     @Modifying
