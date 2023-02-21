@@ -18,7 +18,7 @@
     });
 
     document.querySelector("#deleteBtn").addEventListener("click", function(e){
-        var url = "/user/delete-form";
+        var url = "/user/delete-form/" + this.getAttribute("data-num");
 
         var promise = fetch(url);
 

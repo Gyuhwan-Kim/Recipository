@@ -31,7 +31,7 @@
                             onclick="location.href='/user/contents-form'">글쓰기</button>
                 </li>
                 <li>
-                    <button class="btn btn-light btn-lg"
+                    <button th:data-num="${pagination.pageNum}" class="btn btn-light btn-lg"
                             id="deleteBtn">글 삭제</button>
                 </li>
                 <li>
@@ -50,6 +50,7 @@
         <div id="templateDiv" class="col templateDiv">
             <h2>내 글 모아보기</h2>
             <div th:replace="fragments/menubox :: menubox"></div>
+            <div th:replace="fragments/pagination :: my-pagination"></div>
         </div>
     </div>
 </div>

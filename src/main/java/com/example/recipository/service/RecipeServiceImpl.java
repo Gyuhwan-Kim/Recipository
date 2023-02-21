@@ -38,9 +38,9 @@ public class RecipeServiceImpl implements RecipeService {
     public Map<String, Object> getRecipeList(int pageNum) {
         int pageIndex = pageNum - 1;
         // 한 페이지에 몇 개
-        int groupSize = 2;
+        int groupSize = 12;
         // 페이징을 몇 개로
-        int pageCounts = 2;
+        int pageCounts = 5;
 
         // Repository method에 전달할 Pageable 객체 (index 부터 size 개수만큼)
         PageRequest pageable = PageRequest.of(pageIndex, groupSize);
@@ -298,13 +298,48 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeDto> getMyRecipeList(Member member) {
-        List<Recipe> recipeList = recipeRepository.getAllByMember(member);
+    public Map<String, Object> getMyRecipeList(Member member, int pageNum) {
+        int pageIndex = pageNum - 1;
+        // 한 페이지에 몇 개
+        int groupSize = 8;
+        // 페이징을 몇 개로
+        int pageCounts = 5;
+
+        // Repository method에 전달할 Pageable 객체 (index 부터 size 개수만큼)
+        PageRequest pageable = PageRequest.of(pageIndex, groupSize);
+
+        // Data를 조회하여 response 할 RecipeDto로 변환
+        Page<Recipe> recipeList = recipeRepository.getAllByMemberWithPagination(member, pageable);
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());
         });
 
-        return recipeDtoList;
+        // 게시글 data 전체의 size
+        int totalPageNum = recipeList.getTotalPages();
+
+        // pagination에서 보이는 시작 page number와 끝 page number
+        int startPageNum = ((pageNum - 1) / pageCounts) * pageCounts + 1;
+        int endPageNum = ((pageNum - 1) / pageCounts) * pageCounts + pageCounts;
+
+        // Page의 전체 수가 끝 page number에 해당하지 않으면 끝 page number를 대체
+        if(totalPageNum < endPageNum){
+            endPageNum = totalPageNum;
+        }
+
+        // Pagination을 위해 response 할 data를 담는 PageDto
+        PageDto pageDto = PageDto.builder()
+                .startPageNum(startPageNum)
+                .pageNum(pageNum)
+                .endPageNum(endPageNum)
+                .totalPageNum(totalPageNum)
+                .build();
+
+        // Map에 담아 Controller로
+        Map<String, Object> map = new HashMap<>();
+        map.put("recipeDtoList", recipeDtoList);
+        map.put("pageDto", pageDto);
+
+        return map;
     }
 }

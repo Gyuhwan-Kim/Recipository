@@ -28,23 +28,13 @@ public class PageController {
         this.recipeService = recipeService;
     }
 
-    // index page + 출력할 게시글 목록
-    @GetMapping(value = {"/"})
-    public ModelAndView main(){
-        ModelAndView mView = new ModelAndView();
+    // index page + 출력할 게시글 목록 with pagination
+    @GetMapping(value = {"/", "/page/{pageNum}"})
+    public ModelAndView main(@PathVariable(value = "pageNum", required = false) Integer pageNum){
+        if(pageNum == null){
+            pageNum = 1;
+        }
 
-        Map<String, Object> map = recipeService.getRecipeList(1);
-
-        mView.addObject("recipeList", map.get("recipeDtoList"));
-        mView.addObject("pagination", map.get("pageDto"));
-        mView.setViewName("index");
-
-        return mView;
-    }
-
-    // paging 처리
-    @GetMapping("/page/{pageNum}")
-    public ModelAndView mainWithPaging(@PathVariable("pageNum") int pageNum){
         ModelAndView mView = new ModelAndView();
 
         Map<String, Object> map = recipeService.getRecipeList(pageNum);
@@ -124,13 +114,22 @@ public class PageController {
     }
 
     // 유저 정보 page
-    @GetMapping("/user/my-page")
+    @GetMapping(value = {"/user/my-page", "/user/my-page/{pageNum}"})
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ModelAndView goMyPage(@AuthenticationPrincipal SpUser spUser){
+    public ModelAndView goMyPage(@AuthenticationPrincipal SpUser spUser,
+                                 @PathVariable(required = false) Integer pageNum){
+        if(pageNum == null){
+            pageNum = 1;
+        }
+
         ModelAndView mView = new ModelAndView();
 
         Member member = spUser.toMember();
-        mView.addObject("recipeList", recipeService.getMyRecipeList(member));
+
+        Map<String, Object> map = recipeService.getMyRecipeList(member, pageNum);
+
+        mView.addObject("recipeList", map.get("recipeDtoList"));
+        mView.addObject("pagination", map.get("pageDto"));
         mView.setViewName("pages/my-page");
 
         return mView;
@@ -165,13 +164,18 @@ public class PageController {
         return "fragments/profile-forms :: pwdForm";
     }
 
-    @GetMapping("/user/delete-form")
+    @GetMapping("/user/delete-form/{pageNum}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String goDeleteForm(Model model,
-                               @AuthenticationPrincipal SpUser spUser){
+                               @AuthenticationPrincipal SpUser spUser,
+                               @PathVariable(value = "pageNum", required = false) Integer pageNum){
 
         Member member = spUser.toMember();
-        model.addAttribute("recipeList", recipeService.getMyRecipeList(member));
+
+        Map<String, Object> map = recipeService.getMyRecipeList(member, pageNum);
+
+        model.addAttribute("recipeList", map.get("recipeDtoList"));
+        model.addAttribute("pagination", map.get("pageDto"));
 
         return "fragments/delete-form :: deleteForm";
     }

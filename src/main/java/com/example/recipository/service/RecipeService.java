@@ -21,5 +21,5 @@ public interface RecipeService {
 
     boolean deleteList(List<Long> ids);
 
-    List<RecipeDto> getMyRecipeList(Member member);
+    Map<String, Object> getMyRecipeList(Member member, int pageNum);
 }

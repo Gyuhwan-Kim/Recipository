@@ -22,3 +22,24 @@
         </li>
     </ul>
 </div>
+
+<div class="d-flex justify-content-center" th:fragment="my-pagination">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" th:if="${pagination.startPageNum == 1}">Prev</a>
+            <a th:if="${pagination.startPageNum != 1}"
+               class="page-link" th:href="|/user/my-page/${pagination.startPageNum - 1}|">Prev</a>
+        </li>
+        <li class="page-item" th:each="page : ${#numbers.sequence(pagination.startPageNum, pagination.endPageNum, 1)}">
+            <a class="page-link" th:if="${page != pagination.pageNum}"
+               th:href="|/user/my-page/${page}|" th:text="${page}"></a>
+            <a class="page-link" th:if="${page == pagination.pageNum}"
+               th:text="${page}"></a>
+        </li>
+        <li class="page-item">
+            <a th:if="${pagination.endPageNum < pagination.totalPageNum}"
+               class="page-link" th:href="|/user/my-page/${pagination.endPageNum + 1}|">Next</a>
+            <a class="page-link" th:if="${pagination.endPageNum >= pagination.totalPageNum}">Next</a>
+        </li>
+    </ul>
+</div>

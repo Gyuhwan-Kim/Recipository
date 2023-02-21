@@ -41,6 +41,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r join fetch r.member m where m = :user")
     List<Recipe> getAllByMember(@Param("user") Member member);
 
+    @Query(value = "select r from Recipe r join fetch r.member m where m = :user",
+            countQuery = "select count(r) from Recipe r where r.member = :user")
+    Page<Recipe> getAllByMemberWithPagination(@Param("user") Member member, Pageable pageable);
+
     @Modifying
     @Query("delete from Recipe r where r.member = :user")
     int deleteAllByMember(@Param("user") Member member);
