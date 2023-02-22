@@ -4,6 +4,7 @@ import com.example.recipository.domain.*;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.PageDto;
 import com.example.recipository.dto.RecipeDto;
+import com.example.recipository.dto.SearchDto;
 import com.example.recipository.repository.CommentRepository;
 import com.example.recipository.repository.LinkRepository;
 import com.example.recipository.repository.RecipeRepository;
@@ -35,7 +36,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     // index page 게시글 목록 조회
     @Override
-    public Map<String, Object> getRecipeList(int pageNum) {
+    public Map<String, Object> getRecipeList(int pageNum, SearchDto searchDto) {
         int pageIndex = pageNum - 1;
         // 한 페이지에 몇 개
         int groupSize = 12;
@@ -46,7 +47,19 @@ public class RecipeServiceImpl implements RecipeService {
         PageRequest pageable = PageRequest.of(pageIndex, groupSize);
 
         // Data를 조회하여 response 할 RecipeDto로 변환
-        Page<Recipe> recipeList = recipeRepository.getAllWithPagination(pageable);
+        Page<Recipe> recipeList = null;
+        switch (searchDto.getType()) {
+            case "":
+            case "title":
+                recipeList = recipeRepository.getTitleAllWithPagination(pageable, searchDto.getKeyword());
+                break;
+            case "writer":
+                recipeList = recipeRepository.getWriterAllWithPagination(pageable, searchDto.getKeyword());
+                break;
+            case "content":
+                recipeList = recipeRepository.getContentAllWithPagination(pageable, searchDto.getKeyword());
+                break;
+        }
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeList.forEach(tmp -> {
             recipeDtoList.add(tmp.toDto());

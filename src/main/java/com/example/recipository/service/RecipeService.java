@@ -4,6 +4,7 @@ import com.example.recipository.domain.Member;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.RecipeDto;
+import com.example.recipository.dto.SearchDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface RecipeService {
-    Map<String, Object> getRecipeList(int pageNum);
+    Map<String, Object> getRecipeList(int pageNum, SearchDto searchDto);
     boolean write(RecipeDto recipeDto, MultipartFile multipartFile, Member member);
     Map<String, Object> getRecipe(Long contentId, Cookie[] cookieList);
     RecipeDto getRecipeOnly(Long contentId);

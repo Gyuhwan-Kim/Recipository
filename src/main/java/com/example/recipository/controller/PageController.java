@@ -2,6 +2,7 @@ package com.example.recipository.controller;
 
 import com.example.recipository.domain.Member;
 import com.example.recipository.domain.SpUser;
+import com.example.recipository.dto.SearchDto;
 import com.example.recipository.service.RecipeServiceImpl;
 import com.example.recipository.service.UserServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,17 +31,19 @@ public class PageController {
 
     // index page + 출력할 게시글 목록 with pagination
     @GetMapping(value = {"/", "/page/{pageNum}"})
-    public ModelAndView main(@PathVariable(value = "pageNum", required = false) Integer pageNum){
+    public ModelAndView main(@PathVariable(value = "pageNum", required = false) Integer pageNum,
+                             SearchDto searchDto){
         if(pageNum == null){
             pageNum = 1;
         }
 
         ModelAndView mView = new ModelAndView();
 
-        Map<String, Object> map = recipeService.getRecipeList(pageNum);
+        Map<String, Object> map = recipeService.getRecipeList(pageNum, searchDto);
 
         mView.addObject("recipeList", map.get("recipeDtoList"));
         mView.addObject("pagination", map.get("pageDto"));
+        mView.addObject("searchData", searchDto);
         mView.setViewName("index");
 
         return mView;

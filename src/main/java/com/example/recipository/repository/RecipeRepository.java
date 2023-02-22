@@ -3,6 +3,7 @@ package com.example.recipository.repository;
 import com.example.recipository.domain.Member;
 import com.example.recipository.domain.Recipe;
 import com.example.recipository.domain.SpUser;
+import com.example.recipository.dto.SearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,9 +18,20 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r join fetch r.member")
     List<Recipe> getAllRecipe();
 
-    @Query(value = "select r from Recipe r join fetch r.member",
+    // 제목으로 검색 + pagination
+    @Query(value = "select r from Recipe r join fetch r.member where r.title like %:keyword%",
             countQuery = "select count(r) from Recipe r")
-    Page<Recipe> getAllWithPagination(Pageable pageable);
+    Page<Recipe> getTitleAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
+
+    // 작성자로 검색 + pagination
+    @Query(value = "select r from Recipe r join fetch r.member m where m.name like %:keyword%",
+            countQuery = "select count(r) from Recipe r")
+    Page<Recipe> getWriterAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
+
+    // 내용으로 검색 + pagination
+    @Query(value = "select r from Recipe r join fetch r.member where r.content like %:keyword%",
+            countQuery = "select count(r) from Recipe r")
+    Page<Recipe> getContentAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
 
     @Query(value = "select name from recipe r " +
             "join member m on r.user_id = m.user_id " +
