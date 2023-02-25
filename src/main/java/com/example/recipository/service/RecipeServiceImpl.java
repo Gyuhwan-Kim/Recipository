@@ -104,6 +104,8 @@ public class RecipeServiceImpl implements RecipeService {
                 // application.properties 에 작성한 save path
                 // 각 운영체제에 맞는 separator
                 String savePath = this.savePath + File.separator;
+                String tempPath = File.separator + "lib"
+                        + File.separator + "upload" + File.separator;
                 File file = new File(savePath);
                 // 해당 경로에 directory가 없을 시 만듦
                 if (!file.exists()) {
@@ -120,7 +122,7 @@ public class RecipeServiceImpl implements RecipeService {
                 // directory에 upload file save
                 imageFile.transferTo(new File(savePath + saveFileName));
                 // RecipeDto에 image save path setting
-                recipeDto.setImagePath(savePath + saveFileName);
+                recipeDto.setImagePath(tempPath + saveFileName);
             }
 
             // RecipeDto에 조회수, 좋아요 0으로 setting
@@ -228,6 +230,8 @@ public class RecipeServiceImpl implements RecipeService {
             // 넘겨받은 file이 있다면 수정 정보가 담긴 recipeDto에 setting 하고
             if(imageFile != null){
                 String savePath = this.savePath + File.separator;
+                String tempPath = File.separator + "lib"
+                        + File.separator + "upload" + File.separator;
 
                 // 넘겨받은 file name
                 String originFileName = imageFile.getOriginalFilename();
@@ -239,7 +243,7 @@ public class RecipeServiceImpl implements RecipeService {
                 // directory에 upload file save
                 imageFile.transferTo(new File(savePath + saveFileName));
                 // RecipeDto에 image save path setting
-                recipeDto.setImagePath(savePath + saveFileName);
+                recipeDto.setImagePath(tempPath + saveFileName);
             }
 
             // 기존 DB의 Link data 와 새로 변경할 Link data에 대해

@@ -38,8 +38,8 @@
             </div>
             <div class="col-4" style="padding-left: 35px;">
                 <a href="" id="imageUploadBtn">
-                    <img src="/lib/image/contentform_default_img.png" alt="" id="image"
-                         name="image" style="width: 240px; height: 240px;">
+                    <img th:src="${recipe.imagePath != null} ? ${recipe.imagePath} : '/lib/image/no_image.png'"
+                         alt="" id="image" name="image" style="width: 240px; height: 240px;">
                 </a>
             </div>
         </div>

@@ -52,6 +52,7 @@ public class Recipe extends BaseTime {
                 .contentId(contentId)
                 .title(title)
                 .writer(member.getName())
+                .imagePath(imagePath)
                 .build();
     }
 

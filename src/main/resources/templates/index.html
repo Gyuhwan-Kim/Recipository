@@ -19,16 +19,11 @@
   <div th:replace="fragments/navibar :: navi"></div>
   <div>
     <div>
-      <button class="btn btn-light" sec:authorize="isAuthenticated()">
-        <a href="/user/contents-form">글쓰기</a>
+      <button class="btn btn-light float-end" sec:authorize="isAuthenticated()">
+        <a href="/user/contents-form" style="text-decoration: none; text-color: black;">글쓰기</a>
       </button>
     </div>
-    <span>순위</span><a href="">+ 더보기</a>
   </div>
-  <div th:replace="fragments/menubox :: menubox"></div>
-  <br>
-  <h2>카테고리 분류</h2>
-  <br>
   <div th:replace="fragments/menubox :: menubox"></div>
   <br>
   <div th:replace="fragments/pagination :: pagination"></div>

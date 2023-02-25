@@ -69,8 +69,8 @@
             </div>
             <div class="col-4" style="padding-left: 35px;">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="/lib/image/no_image.png" alt="" id="image"
-                         name="image" style="width: 240px; height: 240px;">
+                    <img th:src="${recipe.imagePath != null} ? ${recipe.imagePath} : '/lib/image/no_image.png'"
+                         alt="" id="image" name="image" style="width: 240px; height: 240px;">
                 </a>
                 <div class="row">
                 <div class="col">
@@ -140,7 +140,8 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="${recipe.title}">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <img src="/lib/image/no_image.png" alt="">
+            <img th:src="${recipe.imagePath != null} ? ${recipe.imagePath} : '/lib/image/no_image.png'"
+                 alt="">
         </div>
     </div>
 </div>
