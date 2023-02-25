@@ -8,6 +8,10 @@
   <title>main.html</title>
   <link rel="stylesheet" href="/lib/css/bootstrap.css">
   <link rel="stylesheet" href="/lib/css/navigation-bar.css">
+  <link rel="stylesheet" href="/lib/css/footer.css">
+  <!---------------------- 외부 css 링크 로딩하기 ---------------------->
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
   <style>
     .menubox{
       display:inline-block;
@@ -27,6 +31,7 @@
   <div th:replace="fragments/menubox :: menubox"></div>
   <br>
   <div th:replace="fragments/pagination :: pagination"></div>
+  <footer th:replace="fragments/footer :: footer"></footer>
 </div>
 </body>
 </html>

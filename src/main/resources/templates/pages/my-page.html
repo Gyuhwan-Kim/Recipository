@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/lib/css/bootstrap.css">
     <link rel="stylesheet" href="/lib/css/navigation-bar.css">
     <link rel="stylesheet" href="/lib/css/my-page.css">
+    <link rel="stylesheet" href="/lib/css/footer.css">
+    <!---------------------- 외부 css 링크 로딩하기 ---------------------->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 </head>
 <style>
     .menubox{
@@ -53,6 +57,7 @@
             <div th:replace="fragments/pagination :: my-pagination"></div>
         </div>
     </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </div>
 </body>
 <script src="/app/my-page.js"></script>

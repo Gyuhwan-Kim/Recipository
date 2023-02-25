@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="/lib/css/bootstrap.css">
 <link rel="stylesheet" href="/lib/css/contentform.css">
 <link rel="stylesheet" href="/lib/css/navigation-bar.css">
+<link rel="stylesheet" href="/lib/css/footer.css">
+<!---------------------- 외부 css 링크 로딩하기 ---------------------->
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 <style>
     a{
         text-decoration: none;
@@ -130,6 +134,7 @@
             <button class="btn btn-light float-end col-1" id="replyCancel">취소</button>
         </form>
     </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1"

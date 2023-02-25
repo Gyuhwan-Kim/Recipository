@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="/lib/css/bootstrap.css">
 <link rel="stylesheet" href="/lib/css/contentform.css">
 <link rel="stylesheet" href="/lib/css/navigation-bar.css">
+<link rel="stylesheet" href="/lib/css/footer.css">
+<!---------------------- 외부 css 링크 로딩하기 ---------------------->
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 <body>
 <div class="container">
     <div th:replace="fragments/navibar :: navi"></div>
@@ -82,6 +86,7 @@
             <a href="#" id="cancelBtn" class="btn btn-light text-decoration-none col">수정 취소</a>
         </div>
     </form>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </div>
 </body>
 <script src="/lib/js/bootstrap.bundle.js"></script>
