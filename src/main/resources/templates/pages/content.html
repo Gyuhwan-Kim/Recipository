@@ -109,14 +109,11 @@
     </div>
     <div class="comment" id="commentDiv">
         <h2 class="row col-8">댓글</h2>
-        <div class="row col-8" th:each="comment : ${commentList}">
-            <div th:if="${comment.groupId} == ${comment.commentId}">
-                <div th:replace="fragments/comment :: normal(${comment})"></div>
-            </div>
-            <div th:if="${comment.groupId} != ${comment.commentId}">
-                <div th:replace="fragments/comment :: reply(${comment})"></div>
-            </div>
-        </div>
+        <div th:replace="fragments/comment :: comment"></div>
+    </div>
+    <div class="text-center" th:if="${totalCommentPages > 1}">
+        <button class="btn btn-secondary row col-2" id="moreCommentBtn"
+                style="margin: 10px;">댓글 더보기</button>
     </div>
     <div class="row col-8 reply" sec:authorize="isAuthenticated()">
         <form class="row" action="/user/comments" id="commentForm" method="post">
@@ -152,5 +149,10 @@
 </div>
 </body>
 <script src="/lib/js/bootstrap.bundle.js"></script>
+<script>
+    var contentId = [[${recipe.contentId}]];
+    var pageNum = 1;
+    var totalCommentPages = [[${totalCommentPages}]];
+</script>
 <script th:inline="javascript" src="/app/content.js"></script>
 </html>

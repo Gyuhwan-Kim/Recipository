@@ -2,40 +2,10 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="normal(comment)"
-     th:class="|row reply groupId${comment.groupId}|"
-     th:id="|normalComment${comment.commentId}|">
-    <div class="flex-row">
-        <span th:text="${comment.writer}"></span>
-        <span th:text="|/ ${comment.regDate}|"></span>
-    </div>
-    <input type="text" th:id="|input${comment.commentId}|" class="form-control col"
-           style="background-color: white;" th:value="${comment.comment}" disabled>
-    <button th:if="${comment.beDeleted} == false"
-            th:data-num="${comment.groupId}"
-            th:data-text="${comment.writer}"
-            th:id = "|reply${comment.commentId}|"
-            sec:authorize="isAuthenticated()"
-            class="btn btn-light float-end col-1 replyBtn" type="submit"
-            style="width: 70px;">답글</button>
-    <a th:if="${comment.writer} == ${#authentication.getPrincipal().name} and ${comment.beDeleted} == false"
-            th:id = "|delete${comment.commentId}|"
-            sec:authorize="isAuthenticated()"
-            th:href="@{/user/comments/{commentId}(commentId=${comment.commentId})}"
-            class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
-            style="width: 70px;">삭제</a>
-</div>
-<div th:fragment="reply(comment)"
-     th:class="|row reply groupId${comment.groupId}|"
-     th:id="|replyComment${comment.commentId}|">
-    <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29"
-         fill="currentColor" class="bi bi-arrow-return-right col-1" viewBox="0 0 16 16"
-         style="margin-top: 25px;">
-        <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5
-                    2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5
-                    0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-    </svg>
-    <div class="row col" style="padding: 0px;">
+<div th:fragment="comment" class="row col-8 comment" th:each="comment : ${commentList}">
+    <div th:if="${comment.groupId} == ${comment.commentId}"
+         th:class="|row reply groupId${comment.groupId}|"
+         th:id="|normalComment${comment.commentId}|">
         <div class="flex-row">
             <span th:text="${comment.writer}"></span>
             <span th:text="|/ ${comment.regDate}|"></span>
@@ -48,14 +18,51 @@
                 th:id = "|reply${comment.commentId}|"
                 sec:authorize="isAuthenticated()"
                 class="btn btn-light float-end col-1 replyBtn" type="submit"
+                onclick="reply(this)"
                 style="width: 70px;">답글</button>
-        <a th:if="${comment.writer} == ${#authentication.getPrincipal().name} and ${comment.beDeleted} == false"
+        <button th:if="${comment.writer} == ${#authentication.getPrincipal().name}
+                                            and ${comment.beDeleted} == false"
                 th:data-num="${comment.commentId}"
                 th:id = "|delete${comment.commentId}|"
                 sec:authorize="isAuthenticated()"
-                th:href="@{/user/comments/{commentId}(commentId=${comment.commentId})}"
                 class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
-                style="width: 70px;">삭제</a>
+                onclick="deleteReply(this)"
+                style="width: 70px;">삭제</button>
+    </div>
+    <div th:if="${comment.groupId} != ${comment.commentId}"
+         th:class="|row reply groupId${comment.groupId}|"
+         th:id="|replyComment${comment.commentId}|">
+        <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29"
+             fill="currentColor" class="bi bi-arrow-return-right col-1" viewBox="0 0 16 16"
+             style="margin-top: 25px;">
+            <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5
+                        2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5
+                        0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+        </svg>
+        <div class="row col" style="padding: 0px;">
+            <div class="flex-row">
+                <span th:text="${comment.writer}"></span>
+                <span th:text="|/ ${comment.regDate}|"></span>
+            </div>
+            <input type="text" th:id="|input${comment.commentId}|" class="form-control col"
+                   style="background-color: white;" th:value="${comment.comment}" disabled>
+            <button th:if="${comment.beDeleted} == false"
+                    th:data-num="${comment.groupId}"
+                    th:data-text="${comment.writer}"
+                    th:id = "|reply${comment.commentId}|"
+                    sec:authorize="isAuthenticated()"
+                    class="btn btn-light float-end col-1 replyBtn" type="submit"
+                    onclick="reply(this)"
+                    style="width: 70px;">답글</button>
+            <button th:if="${comment.writer} == ${#authentication.getPrincipal().name}
+                                                and ${comment.beDeleted} == false"
+                    th:data-num="${comment.commentId}"
+                    th:id = "|delete${comment.commentId}|"
+                    sec:authorize="isAuthenticated()"
+                    class="btn btn-light float-end col-1 commentDeleteBtn" type="submit"
+                    onclick="deleteReply(this)"
+                    style="width: 70px;">삭제</button>
+        </div>
     </div>
 </div>
 </html>

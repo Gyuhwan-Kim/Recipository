@@ -153,7 +153,14 @@ public class RecipeServiceImpl implements RecipeService {
 
         // 게시글에 대한 댓글 data를 가져옴
         List<CommentDto.CommentResponseDto> commentDtoList = new ArrayList<>();
-        List<Comment> commentList = commentRepository.getCommentByRecipe(recipe);
+
+        // 첫 댓글 page의 index는 0
+        int pageIndex = 0;
+        int groupSize = 5;
+
+        PageRequest pageable = PageRequest.of(pageIndex, groupSize);
+        Page<Comment> commentList = commentRepository.getCommentWithPagination(contentId, pageable);
+
         commentList.forEach(tmp -> {
             commentDtoList.add(tmp.toDto());
         });
@@ -206,8 +213,28 @@ public class RecipeServiceImpl implements RecipeService {
         map.put("visitCookie", visitCookie);
         map.put("recipeDto", recipeDto);
         map.put("commentDtoList", commentDtoList);
+        map.put("totalCommentPages", commentList.getTotalPages());
 
         return map;
+    }
+
+    // 댓글 더보기 시 다음 댓글 추가 (댓글 pagination)
+    @Override
+    public List<CommentDto.CommentResponseDto> getCommentWithPagination(Long contentId, int pageNum) {
+        // 게시글에 대한 댓글 data를 가져옴
+        List<CommentDto.CommentResponseDto> commentDtoList = new ArrayList<>();
+
+        // 넘어오는 pageNum의 값은 1부터 (0은 이미 나감)
+        int pageIndex = pageNum;
+        int groupSize = 5;
+
+        PageRequest pageable = PageRequest.of(pageIndex, groupSize);
+        Page<Comment> commentList = commentRepository.getCommentWithPagination(contentId, pageable);
+        commentList.forEach(tmp -> {
+            commentDtoList.add(tmp.toDto());
+        });
+
+        return commentDtoList;
     }
 
     @Override

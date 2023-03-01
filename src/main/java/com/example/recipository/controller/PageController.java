@@ -5,6 +5,7 @@ import com.example.recipository.domain.SpUser;
 import com.example.recipository.dto.SearchDto;
 import com.example.recipository.service.RecipeServiceImpl;
 import com.example.recipository.service.UserServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -90,10 +92,24 @@ public class PageController {
         // service에서 data를 가져와서 ModelAndView 객체에 담음
         mView.addObject("recipe", map.get("recipeDto"));
         mView.addObject("commentList", map.get("commentDtoList"));
+        mView.addObject("totalCommentPages", map.get("totalCommentPages"));
         // 이동하고자 하는 페이지 정보와 함께 return
         mView.setViewName("pages/content");
 
         return mView;
+    }
+
+    // 댓글 더보기 시 다음 댓글 추가 (댓글 pagination)
+    @GetMapping("/contents/{contentId}/comments/{pageNum}")
+    public String loadComment(Model model,
+                              @PathVariable("contentId") Long contentId,
+                              @PathVariable("pageNum") Integer pageNum){
+
+        // 새로 로딩할 댓글 data를 Model에 담음
+        model.addAttribute("commentList",
+                recipeService.getCommentWithPagination(contentId, pageNum));
+
+        return "fragments/comment :: comment";
     }
 
     // 게시글 수정 page
