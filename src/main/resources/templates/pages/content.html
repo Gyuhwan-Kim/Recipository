@@ -90,14 +90,12 @@
                 </div>
             </div>
         </div>
-        <div class="row col-8" style="float: none; margin:0 auto;">
-            <label for="" style="float: none; margin:0 auto;">카테고리</label>
-        </div>
+        <br>
         <div class="row col-8">
             <label for="link" style="width: 150px;">참고 링크</label>
             <ul id="link" th:if="${recipe.link.size} != 0">
                 <li th:each="link : ${recipe.link}">
-                    <a href="" class="refLink form-control" th:text="${link}"></a>
+                    <a th:href="${link}" class="refLink form-control text-center" th:text="${link}"></a>
                 </li>
             </ul>
             <ul id="link" th:unless="${recipe.link.size} != 0">

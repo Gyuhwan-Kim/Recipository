@@ -22,12 +22,11 @@
 <div class="container">
   <div th:replace="fragments/navibar :: navi"></div>
   <div>
-    <div>
-      <button class="btn btn-light float-end" sec:authorize="isAuthenticated()">
-        <a href="/user/contents-form" style="text-decoration: none; text-color: black;">글쓰기</a>
-      </button>
-    </div>
+    <button class="btn btn-light float-end" sec:authorize="isAuthenticated()">
+      <a href="/user/contents-form" style="text-decoration: none; text-color: black;">글쓰기</a>
+    </button>
   </div>
+  <br>
   <div th:replace="fragments/menubox :: menubox"></div>
   <br>
   <div th:replace="fragments/pagination :: pagination"></div>

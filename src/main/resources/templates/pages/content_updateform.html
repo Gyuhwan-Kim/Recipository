@@ -48,9 +48,7 @@
             </div>
         </div>
         <input type="file" id="imageFile" name="imageFile" style="display:none">
-        <div class="row col-8" style="float: none; margin:0 auto;">
-            <label for="" style="float: none; margin:0 auto;">카테고리</label>
-        </div>
+        <br>
         <div class="row col-8">
             <label for="linkList" style="width: 150px;">참고 링크</label>
             <button id="linkAddBtn" class="btn btn-secondary" style="width: 110px;">링크 추가</button>
@@ -71,14 +69,9 @@
                 </li>
             </ul>
         </div>
-        <div class="row col-8" style="width: 240px;" th:if="${recipe.bePublic} == true">
+        <div class="row col-8" style="width: 240px;">
             <input type="checkbox" id="bePublic" name="bePublic" class="form-check-input"
-                   style="margin-top: 10px;" checked>
-            <label for="bePublic" style="padding-right: 0px; width: 210px;">게시글 공개 여부</label>
-        </div>
-        <div class="row col-8" style="width: 240px;" th:unless="${recipe.bePublic} == true">
-            <input type="checkbox" id="bePublic" name="bePublic" class="form-check-input"
-                   style="margin-top: 10px;" checked>
+                   style="margin-top: 10px;" th:checked="${recipe.bePublic} == true">
             <label for="bePublic" style="padding-right: 0px; width: 210px;">게시글 공개 여부</label>
         </div>
         <div class="row col-5">
