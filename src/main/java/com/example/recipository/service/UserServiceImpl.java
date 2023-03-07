@@ -184,12 +184,15 @@ public class UserServiceImpl implements UserService {
             // 삭제하고자 하는 게시글 목록
             List<Recipe> recipeList = recipeRepository.getAllByMember(member);
 
-            // 타 게시글에 있는 사용자의 댓글 작성자를 0번으로 변경
-            commentRepository.updateAllByMember(member, deleteMember, recipeList);
-            // 사용자가 작성한 게시글 하위에 있는 모든 댓글 삭제
-            commentRepository.deleteAllByRecipes(recipeList);
-            // 사용자가 작성한 게시글의 참조 링크 삭제
-            linkRepository.deleteAllByRecipes(recipeList);
+            // 모든 게시글에 있는 사용자의 댓글 작성자를 0번으로 변경
+            commentRepository.updateAllByMember(member, deleteMember);
+
+            if(recipeList.size() != 0){
+                // 사용자가 작성한 게시글 하위에 있는 모든 댓글 삭제
+                commentRepository.deleteAllByRecipes(recipeList);
+                // 사용자가 작성한 게시글의 참조 링크 삭제
+                linkRepository.deleteAllByRecipes(recipeList);
+            }
             // 사용자가 작성한 게시글 삭제
             recipeRepository.deleteAllByMember(member);
 

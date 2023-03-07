@@ -255,7 +255,7 @@ public class RecipeServiceImpl implements RecipeService {
             Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
 
             // 넘겨받은 file이 있다면 수정 정보가 담긴 recipeDto에 setting 하고
-            if(imageFile != null){
+            if (!imageFile.isEmpty()) {
                 String savePath = this.savePath + File.separator;
                 String tempPath = File.separator + "lib"
                         + File.separator + "upload" + File.separator;

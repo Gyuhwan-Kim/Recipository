@@ -19,17 +19,20 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> getAllRecipe();
 
     // 제목으로 검색 + pagination
-    @Query(value = "select r from Recipe r join fetch r.member where r.title like %:keyword%",
+    @Query(value = "select r from Recipe r join fetch r.member where r.bePublic = true and r.title like %:keyword% " +
+            "order by r.regDate desc",
             countQuery = "select count(r) from Recipe r")
     Page<Recipe> getTitleAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
 
     // 작성자로 검색 + pagination
-    @Query(value = "select r from Recipe r join fetch r.member m where m.name like %:keyword%",
+    @Query(value = "select r from Recipe r join fetch r.member m where r.bePublic = true and m.name like %:keyword% " +
+            "order by r.regDate desc",
             countQuery = "select count(r) from Recipe r")
     Page<Recipe> getWriterAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
 
     // 내용으로 검색 + pagination
-    @Query(value = "select r from Recipe r join fetch r.member where r.content like %:keyword%",
+    @Query(value = "select r from Recipe r join fetch r.member where r.bePublic = true and r.content like %:keyword% " +
+            "order by r.regDate desc",
             countQuery = "select count(r) from Recipe r")
     Page<Recipe> getContentAllWithPagination(Pageable pageable, @Param("keyword") String keyword);
 
@@ -53,7 +56,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r join fetch r.member m where m = :user")
     List<Recipe> getAllByMember(@Param("user") Member member);
 
-    @Query(value = "select r from Recipe r join fetch r.member m where m = :user",
+    @Query(value = "select r from Recipe r join fetch r.member m where m = :user " +
+            "order by r.regDate desc",
             countQuery = "select count(r) from Recipe r where r.member = :user")
     Page<Recipe> getAllByMemberWithPagination(@Param("user") Member member, Pageable pageable);
 

@@ -57,7 +57,7 @@ public class UserRepositoryTest {
 
         Member member2 = userRepository.getReferenceById(0L);
 
-        int result = commentRepository.updateAllByMember(member, member2, recipeList);
+        int result = commentRepository.updateAllByMember(member, member2);
         System.out.println(result);
 
         commentRepository.deleteAllByRecipes(recipeList);

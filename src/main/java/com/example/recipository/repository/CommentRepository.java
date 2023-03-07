@@ -30,7 +30,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> getCommentByRecipe(@Param("recipe") Recipe recipe);
 
     @Query(value = "select * from comment c " +
-            "where c.target_id = :id",
+            "where c.target_id = :id " +
+            "order by c.group_id asc, c.comment_id asc",
             countQuery = "select count(*) from comment c " +
                     "where c.target_id = :id", nativeQuery = true)
     Page<Comment> getCommentWithPagination(@Param("id") Long id, Pageable pageable);
@@ -38,9 +39,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Modifying
     @Query("update Comment c " +
             "set c.beDeleted = true, c.member = :newId " +
-            "where c.member = :id and c.recipe not in :recipes")
-    int updateAllByMember(@Param("id") Member member, @Param("newId") Member deleteMember,
-                          @Param("recipes") Collection<Recipe> recipeList);
+            "where c.member = :id")
+    int updateAllByMember(@Param("id") Member member, @Param("newId") Member deleteMember);
 
 //    @Modifying
 //    @Query(value = "delete from comment c where c.target_id in :ids", nativeQuery = true)
