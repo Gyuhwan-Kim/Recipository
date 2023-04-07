@@ -25,47 +25,47 @@ public class UserRepositoryTest {
     @Autowired
     CommentRepository commentRepository;
 
-    @Test
-    public void insertDummy(){
-//        SpUser user = new SpUser();
-//
-////        user.setUserId(1L);
-//        user.setEmail("dummy@gmail.com");
-//        user.setName("dummy");
-//        user.setPassword("dummy1234");
-//
-//        user.setEnabled(true);
-//
-//        userRepository.save(user);
-
-    }
-
 //    @Test
-//    public void login(){
-//        SpUser user = new SpUser();
-//        user.setEmail("admin@recipository.com");
+//    public void insertDummy(){
+////        SpUser user = new SpUser();
+////
+//////        user.setUserId(1L);
+////        user.setEmail("dummy@gmail.com");
+////        user.setName("dummy");
+////        user.setPassword("dummy1234");
+////
+////        user.setEnabled(true);
+////
+////        userRepository.save(user);
 //
-//        SpUser dbData = userRepository.getByEmail(user.getEmail());
-//        System.out.println(dbData);
 //    }
-
-    @Test
-    @Transactional
-    public void test2(){
-        Member member = userRepository.getMemberByEmail("test3@test.com");
-        List<Recipe> recipeList = member.getRecipeList();
-
-        Member member2 = userRepository.getReferenceById(0L);
-
-        int result = commentRepository.updateAllByMember(member, member2);
-        System.out.println(result);
-
-        commentRepository.deleteAllByRecipes(recipeList);
-        linkRepository.deleteAllByRecipes(recipeList);
-        recipeRepository.deleteAllByMember(member);
-
-        userRepository.delete(member);
-
-        System.out.println("test over");
-    }
+//
+////    @Test
+////    public void login(){
+////        SpUser user = new SpUser();
+////        user.setEmail("admin@recipository.com");
+////
+////        SpUser dbData = userRepository.getByEmail(user.getEmail());
+////        System.out.println(dbData);
+////    }
+//
+//    @Test
+//    @Transactional
+//    public void test2(){
+//        Member member = userRepository.getMemberByEmail("test3@test.com");
+//        List<Recipe> recipeList = member.getRecipeList();
+//
+//        Member member2 = userRepository.getReferenceById(0L);
+//
+//        int result = commentRepository.updateAllByMember(member, member2);
+//        System.out.println(result);
+//
+//        commentRepository.deleteAllByRecipes(recipeList);
+//        linkRepository.deleteAllByRecipes(recipeList);
+//        recipeRepository.deleteAllByMember(member);
+//
+//        userRepository.delete(member);
+//
+//        System.out.println("test over");
+//    }
 }

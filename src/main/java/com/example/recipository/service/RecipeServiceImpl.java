@@ -1,5 +1,9 @@
 package com.example.recipository.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.recipository.domain.*;
 import com.example.recipository.dto.CommentDto;
 import com.example.recipository.dto.PageDto;
@@ -17,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -28,10 +33,15 @@ public class RecipeServiceImpl implements RecipeService {
     @Value("${file.directory}")
     private String savePath;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository) {
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3Client amazonS3Client;
+
+    public RecipeServiceImpl(RecipeRepository recipeRepository, LinkRepository linkRepository, CommentRepository commentRepository, AmazonS3 amazonS3, AmazonS3Client amazonS3Client) {
         this.recipeRepository = recipeRepository;
         this.linkRepository = linkRepository;
         this.commentRepository = commentRepository;
+        this.amazonS3Client = amazonS3Client;
     }
 
     // index page 게시글 목록 조회
@@ -99,19 +109,8 @@ public class RecipeServiceImpl implements RecipeService {
     public boolean write(RecipeDto recipeDto,
                          MultipartFile imageFile,
                          Member member) {
-        try {
+        try(InputStream inputStream = imageFile.getInputStream()) {
             if (!imageFile.isEmpty()) {
-                // application.properties 에 작성한 save path
-                // 각 운영체제에 맞는 separator
-                String savePath = this.savePath + File.separator;
-                String tempPath = File.separator + "lib"
-                        + File.separator + "upload" + File.separator;
-                File file = new File(savePath);
-                // 해당 경로에 directory가 없을 시 만듦
-                if (!file.exists()) {
-                    file.mkdir();
-                }
-
                 // 넘겨받은 file name
                 String originFileName = imageFile.getOriginalFilename();
                 // save file name에 사용할 UUID String
@@ -119,10 +118,44 @@ public class RecipeServiceImpl implements RecipeService {
                 // save file name
                 String saveFileName = uuid + originFileName;
 
-                // directory에 upload file save
-                imageFile.transferTo(new File(savePath + saveFileName));
-                // RecipeDto에 image save path setting
-                recipeDto.setImagePath(tempPath + saveFileName);
+                // S3 bucket에 save하기 위해 PutObjectRequest에 필요한 인자
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(imageFile.getSize());
+                objectMetadata.setContentType(imageFile.getContentType());
+
+                // S3 bucket에 saveFileName으로 저장
+                amazonS3Client.putObject(
+                        new PutObjectRequest(bucket, saveFileName, inputStream, objectMetadata)
+                );
+
+                // 방금 file이 저장된 url
+                String storeFileUrl = amazonS3Client.getUrl(bucket, saveFileName).toString();
+
+                // RecipeDto에 image url save
+                recipeDto.setImagePath(storeFileUrl);
+
+//                // application.properties 에 작성한 save path
+//                // 각 운영체제에 맞는 separator
+//                String savePath = this.savePath + File.separator;
+//                String tempPath = File.separator + "lib"
+//                        + File.separator + "upload" + File.separator;
+//                File file = new File(savePath);
+//                // 해당 경로에 directory가 없을 시 만듦
+//                if (!file.exists()) {
+//                    file.mkdir();
+//                }
+//
+//                // 넘겨받은 file name
+//                String originFileName = imageFile.getOriginalFilename();
+//                // save file name에 사용할 UUID String
+//                String uuid = UUID.randomUUID().toString();
+//                // save file name
+//                String saveFileName = uuid + originFileName;
+//
+//                // directory에 upload file save
+//                imageFile.transferTo(new File(savePath + saveFileName));
+//                // RecipeDto에 image save path setting
+//                recipeDto.setImagePath(tempPath + saveFileName);
             }
 
             // RecipeDto에 조회수, 좋아요 0으로 setting
@@ -250,16 +283,12 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     @Override
     public boolean update(Long contentId, RecipeDto recipeDto, MultipartFile imageFile) {
-        try {
+        try(InputStream inputStream = imageFile.getInputStream()) {
             // 기존 DB의 data에 대해
             Recipe recipe = recipeRepository.getRecipeByContentId(contentId);
 
             // 넘겨받은 file이 있다면 수정 정보가 담긴 recipeDto에 setting 하고
             if (!imageFile.isEmpty()) {
-                String savePath = this.savePath + File.separator;
-                String tempPath = File.separator + "lib"
-                        + File.separator + "upload" + File.separator;
-
                 // 넘겨받은 file name
                 String originFileName = imageFile.getOriginalFilename();
                 // save file name에 사용할 UUID String
@@ -267,10 +296,36 @@ public class RecipeServiceImpl implements RecipeService {
                 // save file name
                 String saveFileName = uuid + originFileName;
 
-                // directory에 upload file save
-                imageFile.transferTo(new File(savePath + saveFileName));
-                // RecipeDto에 image save path setting
-                recipeDto.setImagePath(tempPath + saveFileName);
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentLength(imageFile.getSize());
+                objectMetadata.setContentType(imageFile.getContentType());
+
+                // S3 bucket에 saveFileName으로 저장
+                amazonS3Client.putObject(
+                        new PutObjectRequest(bucket, saveFileName, inputStream, objectMetadata)
+                );
+
+                // 방금 file이 저장된 url
+                String storeFileUrl = amazonS3Client.getUrl(bucket, saveFileName).toString();
+
+                // RecipeDto에 image url save
+                recipeDto.setImagePath(storeFileUrl);
+
+//                String savePath = this.savePath + File.separator;
+//                String tempPath = File.separator + "lib"
+//                        + File.separator + "upload" + File.separator;
+//
+//                // 넘겨받은 file name
+//                String originFileName = imageFile.getOriginalFilename();
+//                // save file name에 사용할 UUID String
+//                String uuid = UUID.randomUUID().toString();
+//                // save file name
+//                String saveFileName = uuid + originFileName;
+//
+//                // directory에 upload file save
+//                imageFile.transferTo(new File(savePath + saveFileName));
+//                // RecipeDto에 image save path setting
+//                recipeDto.setImagePath(tempPath + saveFileName);
             }
 
             // 기존 DB의 Link data 와 새로 변경할 Link data에 대해

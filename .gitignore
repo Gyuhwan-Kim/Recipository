@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### AWS properties
+application-*.properties
