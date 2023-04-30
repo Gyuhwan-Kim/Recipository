@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SpUserService spUserService;
@@ -42,7 +42,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                                 .anyRequest().authenticated()
                 )
                 .formLogin(login ->
-                        login.loginPage("/login-form")
+                        login.loginPage("/loginform")
                                 .loginProcessingUrl("/login")
                                 .permitAll()
                                 .defaultSuccessUrl("/", false)

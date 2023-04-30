@@ -52,7 +52,7 @@ public class PageController {
     }
 
     // 로그인 page
-    @GetMapping("/login-form")
+    @GetMapping("/loginform")
     public String goLogin(){
         return "pages/loginform";
     }
